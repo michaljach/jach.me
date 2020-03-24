@@ -20,13 +20,20 @@ html {
   letter-spacing: var(--letter-spacing);
 }
 
+body,
 p,
 h1 {
   margin: 0;
 }
 
 body {
-  padding: 8rem 1rem;
+  height: 100vh;
+  align-items: center;
+  display: grid;
+}
+
+main {
+  padding: 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 30rem));
   grid-row-gap: var(--row-gap);
@@ -47,7 +54,7 @@ a:hover {
   border-bottom: 3px solid var(--border-color);
 }
 
-main {
+aside {
   display: grid;
   grid-row-gap: var(--row-gap);
 }
@@ -55,12 +62,6 @@ main {
 img {
   animation: 1s ease-out 0s 1 anim;
   max-width: 100%;
-}
-
-@media only screen and (max-width: 720px) {
-  body {
-    padding: 2rem 1rem;
-  }
 }
 
 @keyframes anim {
