@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Michal Jach.</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="computer operator." />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <style>
+      @import url("https://rsms.me/inter/inter.css");
+
+      @supports (font-variation-settings: normal) {
+        html {
+          font-family: "Inter var", sans-serif;
+        }
+      }
+
+      :root {
+        --font-size: 18px;
+        --font-weight-normal: 340;
+        --font-weight-bold: 540;
+        --letter-spacing: 0.5px;
+        --row-gap: 2.4rem;
+        --selection-color: #ffee58;
+        --link-color: #0000ff;
+        --border-color: #e5e5e5;
+      }
+
+      ::selection {
+        background: var(--selection-color);
+      }
+
+      html {
+        font-family: "Inter var", sans-serif;
+        font-size: var(--font-size);
+        font-weight: var(--font-weight-normal);
+        letter-spacing: var(--letter-spacing);
+      }
+
+      p,
+      h1 {
+        margin: 0;
+      }
+
+      .container {
+        padding: 0 1rem;
+        margin-top: 10rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 30rem));
+        grid-row-gap: var(--row-gap);
+        justify-content: center;
+      }
+      @media only screen and (max-width: 720px) {
+        .container {
+          margin-top: 2rem;
+        }
+      }
+      h1 {
+        font-size: var(--font-size);
+        font-weight: var(--font-weight-bold);
+      }
+      a {
+        color: var(--link-color);
+        text-decoration: none;
+      }
+      a:hover {
+        border-bottom: 3px solid var(--border-color);
+      }
+      section {
+        display: grid;
+        grid-row-gap: var(--row-gap);
+      }
+      img {
+        animation: 1s ease-out 0s 1 anim;
+        max-width: 100%;
+      }
+      @keyframes anim {
+        0% {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>
+          Michal Jach.
+        </h1>
+      </header>
+      <section>
+        <p>
+          I am a software engineer and entrepreneur based in Kraków, Poland.
+        </p>
+        <p>
+          I am passionate about new technologies and love fast and clean UIs.
+          Find me on
+          <a href="https://github.com/michaljach">Github</a> or email michaljach
+          at gmail.
+        </p>
+        <p>
+          <img src="avatar.png" />
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
