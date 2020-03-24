@@ -59,7 +59,7 @@ img {
 
 @media only screen and (max-width: 720px) {
   body {
-    margin-top: 2rem;
+    padding: 2rem 1rem;
   }
 }
 
