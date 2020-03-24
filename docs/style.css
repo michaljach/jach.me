@@ -69,6 +69,10 @@ img {
   body {
     align-items: flex-start;
   }
+
+  img {
+    min-height: auto;
+  }
 }
 
 @keyframes anim {
