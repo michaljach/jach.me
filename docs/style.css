@@ -26,8 +26,7 @@ h1 {
 }
 
 body {
-  padding: 0 1rem;
-  margin-top: 10rem;
+  padding: 10rem 1rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 30rem));
   grid-row-gap: var(--row-gap);
