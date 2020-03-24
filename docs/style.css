@@ -67,7 +67,7 @@ img {
 }
 
 @media only screen and (max-width: 720px) {
-  .container {
+  body {
     margin-top: 2rem;
   }
 }
