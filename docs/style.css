@@ -60,9 +60,10 @@ aside {
 }
 
 img {
+  image-rendering: pixelated;
   animation: 1s ease-out 0s 1 anim;
   max-width: 100%;
-  min-height: 540px;
+  min-height: 520px;
 }
 
 @media only screen and (max-width: 720px) {
