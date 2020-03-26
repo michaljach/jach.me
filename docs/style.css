@@ -40,6 +40,10 @@ main {
   justify-content: center;
 }
 
+p {
+  animation: 1s ease-out 0s 1 anim;
+}
+
 h1 {
   font-size: var(--font-size);
   font-weight: var(--font-weight-bold);
