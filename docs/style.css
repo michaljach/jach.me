@@ -1,9 +1,10 @@
 :root {
   --font-size: 18px;
-  --font-weight-normal: 380;
-  --font-weight-bold: 540;
+  --font-weight-normal: 390;
+  --font-weight-bold: 550;
   --letter-spacing: 0.5px;
   --row-gap: 2.4rem;
+  --color: #333;
   --selection-color: #ffee58;
   --link-color: #0000ff;
   --border-color: #e5e5e5;
@@ -19,6 +20,7 @@ html {
   font-weight: var(--font-weight-normal);
   letter-spacing: var(--letter-spacing);
   -webkit-font-smoothing: antialiased;
+  color: var(--color);
 }
 
 body,
@@ -52,7 +54,7 @@ a {
 }
 
 a:hover {
-  border-bottom: 3px solid var(--border-color);
+  border-bottom: 2px solid var(--border-color);
 }
 
 aside {
