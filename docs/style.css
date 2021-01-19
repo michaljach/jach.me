@@ -1,12 +1,13 @@
 @import url("https://rsms.me/inter/inter.css");
 
 :root {
-  --font-size: 18px;
+  --font-size: 16px;
   --font-weight-normal: 400;
   --font-weight-bold: 550;
   --letter-spacing: 0.5px;
-  --row-gap: 2.2rem;
+  --row-gap: 2rem;
   --color: #000;
+  --color-grey: #b0b0b0;
   --selection-color: #ffee58;
   --link-color: #0000ff;
   --border-color: #e5e5e5;
@@ -41,7 +42,6 @@ main {
   padding: 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 25rem));
-  grid-row-gap: var(--row-gap);
   justify-content: center;
 }
 
@@ -55,6 +55,12 @@ a {
   text-decoration: none;
 }
 
+header {
+  display: grid;
+  grid-template-rows: 1.6rem 1fr auto;
+  grid-row-gap: var(--row-gap);
+}
+
 a:hover {
   border-bottom: 2px solid var(--border-color);
 }
@@ -62,12 +68,27 @@ a:hover {
 aside {
   display: grid;
   grid-row-gap: var(--row-gap);
+  grid-template-rows: auto 1fr auto;
 }
 
 img {
   image-rendering: pixelated;
   animation: 1s ease-out 0s 1 anim;
   max-width: 100%;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul li {
+  margin: 1rem 0;
+}
+
+.date {
+  color: var(--color-grey);
 }
 
 @media only screen and (max-width: 720px) {
