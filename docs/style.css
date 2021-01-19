@@ -1,6 +1,8 @@
+@import url("https://rsms.me/inter/inter.css");
+
 :root {
   --font-size: 18px;
-  --font-weight-normal: 390;
+  --font-weight-normal: 400;
   --font-weight-bold: 550;
   --letter-spacing: 0.5px;
   --row-gap: 2.2rem;
