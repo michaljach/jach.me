@@ -78,6 +78,7 @@ footer {
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-small);
   color: var(--color-grey);
+  word-break: break-all;
 }
 
 footer h2 {
