@@ -1,0 +1,76 @@
+:root {
+  --text-color: #000;
+  --subtext-color: #6d6d6d;
+  --border-color: #e7e7e7;
+
+  --dark-text-color: #fff;
+  --dark-subtext-color: #6d6d6d;
+  --dark-border-color: #313131;
+}
+
+html {
+  margin: 0;
+}
+
+body {
+  font-family: "Wix Madefor Text", sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  max-width: 576px;
+  padding: 48px;
+}
+
+.item a {
+  color: var(--subtext-color);
+}
+
+h1 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+h2 {
+  font-size: 14px;
+  font-weight: 450;
+  margin: 0;
+}
+
+span {
+  color: var(--subtext-color);
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    align-items: start;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: var(--dark-text-color);
+    background: #000;
+  }
+
+  a {
+    color: var(--dark-text-color);
+    text-decoration-color: var(--dark-border-color);
+  }
+
+  a:hover {
+    text-decoration-color: var(--dark-text-color);
+  }
+}

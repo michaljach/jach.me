@@ -1,0 +1,27 @@
+:root {
+  --text-color: #000;
+  --subtext-color: #6d6d6d;
+  --border-color: #e7e7e7;
+
+  --dark-text-color: #fff;
+  --dark-subtext-color: #6d6d6d;
+  --dark-border-color: #313131;
+}
+
+html {
+  margin: 0;
+}
+
+body {
+  font-family: "Wix Madefor Text", sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: var(--dark-text-color);
+    background: #000;
+  }
+}
