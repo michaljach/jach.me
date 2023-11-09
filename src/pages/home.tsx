@@ -1,4 +1,4 @@
-import { Component } from "wcsx";
+import { Component } from "htm0";
 import styles from "./home.css";
 
 export default class HomePage extends Component {

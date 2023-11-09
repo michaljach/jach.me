@@ -1,4 +1,4 @@
-import { Component, render } from "wcsx";
+import { Component, render } from "htm0";
 import HomePage from "./pages/home";
 
 class AppComponent extends Component {
