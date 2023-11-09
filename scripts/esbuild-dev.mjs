@@ -14,7 +14,7 @@ let ctx = await context({
   format: "esm",
   splitting: true,
   minify: false,
-  inject: ["./node_modules/wcsx/dist/h"],
+  inject: ["./node_modules/htm0/dist/h"],
   define: { "window.ENV": '"development"' },
   plugins: [
     copy({

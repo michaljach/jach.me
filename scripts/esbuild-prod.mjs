@@ -15,7 +15,7 @@ await build({
   splitting: true,
   minify: true,
   keepNames: true,
-  inject: ["./node_modules/wcsx/dist/h"],
+  inject: ["./node_modules/htm0/dist/h"],
   define: { "window.ENV": '"production"' },
   plugins: [
     copy({
