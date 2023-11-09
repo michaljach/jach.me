@@ -15,7 +15,7 @@ export default class HomePage extends Component {
 
           <div>
             I craft fast and beautiful user interfaces and apps using modern
-            technologies like <a href="https://react.dev/">React</a>, WC or{" "}
+            technologies like <a href="https://react.dev/">React</a>, <a href="https://github.com/michaljach/htm0">htm0</a> or{" "}
             <a href="https://developer.apple.com/xcode/swiftui/">SwiftUI</a>{" "}
             (iOS). I'm a huge believer in open source, you can check my code on{" "}
             <a href="https://github.com/michaljach">Github</a>. I share my
