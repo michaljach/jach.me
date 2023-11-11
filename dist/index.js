@@ -1,4 +1,4 @@
-var y=Object.defineProperty;var s=(e,r)=>y(e,"name",{value:r,configurable:!0});var m=s(e=>e.name[0].toLowerCase()+e.name.slice(1,e.name.length).replace(/[A-Z]/g,r=>`-${r.toLowerCase()}`),"a"),p=s((e,r)=>{let i=m(e);customElements.define(i,e);let o=document.createElement(i);r.appendChild(o)},"r");var a=s((e,r,...i)=>{let o=typeof e=="function",t=o?m(e):e;o&&!customElements.get(t)&&customElements.define(t,e);let n=document.createElement(t);return{tagName:t,attrs:r,element:n,children:i}},"i");var g=s(({tagName:e,attrs:r,children:i,element:o})=>{let t=o;for(let[n,l]of Object.entries(r||{}))switch(n){case"click":case"keyup":t.addEventListener(n,l);break;default:customElements.get(e)?t.props[n]=l:t.setAttribute(n,l);break}for(let n of i||[]){let l=c(n);l&&(customElements.get(e)||t.appendChild(l))}return t},"h"),c=s(e=>e===void 0?null:Array.isArray(e)?g({tagName:"span",attrs:{},children:e,element:document.createElement("span")}):typeof e=="string"||typeof e=="number"?document.createTextNode(e.toString()):g(e),"c"),v=s((e,r)=>{let i=[];for(let o=0;o<Math.min(e.length,r.length);o++)i.push([e[o],r[o]]);return i},"a"),x=s((e,r)=>{let i=[];for(let[t,n]of v(e,r))i.push(u(t,n));let o=[];for(let t of r.slice(e.length))o.push(n=>(n.appendChild(c(t)),n));return t=>{for(let[n,l]of v(i,t.childNodes))n(l);for(let n of o)n(t);return t}},"p"),w=s((e,r)=>{let i=[];i.push(o=>{if(o.props){if(JSON.stringify(o.props)!==JSON.stringify(r)){o.props=r;let t=o.render();u(o.__prevTree,t)(o.shadowRoot.firstElementChild)}}else for(let[t,n]of Object.entries(r||{}))t!=="click"&&t!=="keyup"&&o.setAttribute(t,n);return o});for(let o in e)o in r||i.push(t=>(t.removeAttribute(o),t));return o=>{for(let t of i)t(o)}},"m"),u=s((e,r)=>{if(typeof r>"u")return t=>{t.remove()};if(typeof e=="string"||typeof r=="string"||typeof e=="number"||typeof r=="number")return e!==r?t=>{let n=c(r);return t.replaceWith(n),n}:t=>{};if(Array.isArray(e)||Array.isArray(r)){let t=x(e,r);return n=>(t(n),n)}if(e.tagName!==r.tagName)return t=>{let n=c(r);return t.replaceWith(n),n};let i=w(e.attrs,r.attrs),o=x(e.children,r.children);return t=>(i(t),o(t),t)},"f"),h=class extends HTMLElement{static{s(this,"u")}styles;state={};__v;constructor(){super(),this.attachShadow({mode:"open"})}connectedCallback(){if(this.styles){let r=document.createElement("style");r.innerHTML=this.styles,this.shadowRoot.appendChild(r)}this.__v=this.render();let e=c(this.__v);this.shadowRoot.appendChild(e),this.state=new Proxy(this.state,{set:(r,i,o)=>(r[i]=o,this.diff(),!0)})}diff(){if(this.__v){let e=this.render();u(this.__v,e)(this.shadowRoot.firstElementChild),this.__v=e}}render(){throw`render() in ${this.constructor.name} not implemented.`}};var b=`.container {
+var B=Object.defineProperty;var l=(i,s)=>B(i,"name",{value:s,configurable:!0});var A=Object.defineProperty,d=l((i,s)=>A(i,"name",{value:s,configurable:!0}),"t"),f=d(i=>i.name[0].toLowerCase()+i.name.slice(1,i.name.length).replace(/[A-Z]/g,s=>`-${s.toLowerCase()}`),"getComponentName"),u=d((i,s)=>{let r=f(i);customElements.define(r,i);let a=document.createElement(r);s.appendChild(a)},"render");var e=d((i,s,...r)=>{let a=typeof i=="function",t=a?f(i):i;a&&!customElements.get(t)&&customElements.define(t,i);let n=document.createElement(t);return{tagName:t,attrs:s,element:n,children:r}},"h");var w=d(({tagName:i,attrs:s,children:r,element:a})=>{let t=a;for(let[n,o]of Object.entries(s||{}))switch(n){case"click":case"keyup":t.addEventListener(n,o);break;default:customElements.get(i)?t.props[n]=o:t.setAttribute(n,o);break}for(let n of r||[]){let o=c(n);o&&(customElements.get(i)||t.appendChild(o))}return t},"renderElement"),c=d(i=>i===void 0?null:Array.isArray(i)?w({tagName:"span",attrs:{},children:i,element:document.createElement("span")}):typeof i=="string"||typeof i=="number"?document.createTextNode(i.toString()):w(i),"render"),y=d((i,s)=>{let r=[];for(let a=0;a<Math.min(i.length,s.length);a++)r.push([i[a],s[a]]);return r},"zip"),k=d((i,s)=>{let r=[];for(let[t,n]of y(i,s))r.push(b(t,n));let a=[];for(let t of s.slice(i.length))a.push(n=>(n.appendChild(c(t)),n));return t=>{for(let[n,o]of y(r,t.childNodes))n(o);for(let n of a)n(t);return t}},"diffChildren"),T=d((i,s)=>{let r=[];r.push(a=>{if(a.props){if(JSON.stringify(a.props)!==JSON.stringify(s)){a.props=s;let t=a.render();b(a.__prevTree,t)(a.shadowRoot.firstElementChild)}}else for(let[t,n]of Object.entries(s||{}))t!=="click"&&t!=="keyup"&&a.setAttribute(t,n);return a});for(let a in i)a in s||r.push(t=>(t.removeAttribute(a),t));return a=>{for(let t of r)t(a)}},"diffAttrs"),b=d((i,s)=>{if(typeof s>"u")return t=>{t.remove()};if(typeof i=="string"||typeof s=="string"||typeof i=="number"||typeof s=="number")return i!==s?t=>{let n=c(s);return t.replaceWith(n),n}:t=>{};if(Array.isArray(i)||Array.isArray(s)){let t=k(i,s);return n=>(t(n),n)}if(i.tagName!==s.tagName)return t=>{let n=c(s);return t.replaceWith(n),n};let r=T(i.attrs,s.attrs),a=k(i.children,s.children);return t=>(r(t),a(t),t)},"diff"),m=class extends HTMLElement{static{l(this,"p")}static{d(this,"Component")}styles;props={};state={};__v;constructor(){super(),this.attachShadow({mode:"open"})}connectedCallback(){this.__v=this.render();let i=c(this.__v);if(this.shadowRoot.replaceChildren(i),this.styles){let s=document.createElement("style");s.innerHTML=this.styles,this.shadowRoot.appendChild(s)}this.state=new Proxy(this.state,{set:(s,r,a)=>(s[r]=a,this.diff(),!0)})}diff(){if(this.__v){let i=this.render();b(this.__v,i)(this.shadowRoot.firstElementChild),this.__v=i}}render(){throw`render() in ${this.constructor.name} not implemented.`}},H=class{static{l(this,"y")}static{d(this,"Data")}data={};targets=[];isObserving=!1;observe(){this.data=new Proxy(this.data,{set:(i,s,r)=>{i[s]=r;let{targets:a}=this;return a.forEach(t=>{t.diff()}),!0}})}};function L(i,s){return r=>{let a=class extends r{static{l(this,"s")}static{d(this,"NewClass")}constructor(){super(),this[s||i.constructor.name]=i.data,i.targets.push(this),i.isObserving||(i.observe(),i.isObserving=!0)}};return Object.defineProperty(a,"name",{value:r.name}),a}}l(L,"S");d(L,"data");var h=class extends m{static{l(this,"u")}static{d(this,"RouterComponent")}currentRoute=this.getLocation();constructor(){super(),window.history.pushState=new Proxy(window.history.pushState,{apply:(i,s,r)=>(this.currentRoute=r[2].replace("#","/"),this.diff(),i.apply(s,r))}),window.addEventListener("popstate",()=>{this.currentRoute=this.getLocation(),this.diff()})}getLocation(){return`/${window.location.hash.slice(1)}`||"/"}render(){return e("div",null,this.props.routes[this.currentRoute])}};var C=`.container {
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
@@ -126,4 +126,112 @@ span {
     border-top: 1px solid var(--dark-border-color);
   }
 }
-`;var d=class extends h{static{s(this,"HomePage")}styles=b;render(){return a("div",{class:"container"},a("main",null,a("header",null,a("h1",null,"Michael Jach"),a("span",null,"Software engineer")),a("div",null,"I craft fast and beautiful user interfaces and apps using modern technologies like ",a("a",{href:"https://react.dev/"},"React"),", ",a("a",{href:"https://github.com/michaljach/htm0"},"htm0")," or"," ",a("a",{href:"https://developer.apple.com/xcode/swiftui/"},"SwiftUI")," ","(iOS). I'm a huge believer in open source, you can check my code on"," ",a("a",{href:"https://github.com/michaljach"},"Github"),". I share my thoughts and likes on"," ",a("a",{href:"https://twitter.com/michaeljach/likes"},"Twitter")," and I'm also reachable via email."),a("ul",{class:"links"},a("li",null,a("a",{href:"https://github.com/michaljach"},"Open source")),a("li",null,a("a",{href:"mailto:michaljach@gmail.com?subject=jach.me"},"Contact"))),a("section",{class:"thoughts"},a("h2",null,"Thoughts"),a("ul",{class:"items"},a("li",{class:"item"},a("a",{href:"2023"},a("h3",null,"2023 in review"),a("span",null,"My take on best movies, shows, music, artists and bloopers from this year."))),a("li",{class:"item"},a("a",{href:"items"},a("h3",null,"69 items"),a("span",null," I own 69 items. Here is the list. ")))))))}};var f=class extends h{static{s(this,"AppComponent")}render(){return a(d,null)}};p(f,document.body);
+`;var g=class extends m{static{l(this,"HomePage")}styles=C;render(){return e("div",{class:"container"},e("main",null,e("header",null,e("h1",null,"Michael Jach"),e("span",null,"Software engineer")),e("div",null,"I craft fast and beautiful user interfaces and apps using modern technologies like ",e("a",{href:"https://react.dev/"},"React"),","," ",e("a",{href:"https://github.com/michaljach/htm0"},"htm0")," or"," ",e("a",{href:"https://developer.apple.com/xcode/swiftui/"},"SwiftUI")," ","(iOS). I'm a huge believer in open source, you can check my code on"," ",e("a",{href:"https://github.com/michaljach"},"Github"),". I share my thoughts and likes on"," ",e("a",{href:"https://twitter.com/michaeljach/likes"},"Twitter")," and I'm also reachable via email."),e("ul",{class:"links"},e("li",null,e("a",{href:"https://github.com/michaljach"},"Open source")),e("li",null,e("a",{href:"mailto:michaljach@gmail.com?subject=jach.me"},"Contact"))),e("section",{class:"thoughts"},e("h2",null,"Thoughts"),e("ul",{class:"items"},e("li",{class:"item"},e("a",{href:"#2023"},e("h3",null,"2023 in review"),e("span",null,"My take on best movies, shows, music, artists and bloopers from this year."))),e("li",{class:"item"},e("a",{href:"#items"},e("h3",null,"69 items"),e("span",null," I own 69 items. Here is the list. ")))))))}};var S=`.grid {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.grid-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.grid-element {
+  height: 20rem;
+  display: flex;
+  gap: 2rem 0;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background: #f4f4f6;
+  padding: 1rem;
+}
+
+.grid-element-image {
+  max-width: 12rem;
+  max-height: 16rem;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-element-image-img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.grid-element-title {
+  color: #666;
+  font-size: 12px;
+}
+
+.grid-hero-title {
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.grid-hero-subtitle {
+  font-size: 12px;
+}
+`;var p=class extends m{static{l(this,"ItemsPage")}styles=S;render(){return e("div",{class:"grid"},e("div",{class:"grid-hero"},e("h1",{class:"grid-hero-title"},"jach.me \u2014 items"),e("div",{class:"grid-hero-subtitle"},"I own ",e("strong",null,"69")," items."," ",e("a",{href:"https://minimalistathome.com/minimalism-vs-essentialism/"},"The philosphy."))),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/iphone15pro-removebg-preview.png"})),e("span",{class:"grid-element-title"},"iPhone 15 Pro Black Titanium")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/patagonia-Black-Terrebonne-Joggers-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Patagonia Terrebonne Black Joggers")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/mbp14-spacegray-gallery1-202301-removebg-preview.png"})),e("span",{class:"grid-element-title"},"MacBook Pro 14 M2 Pro Space Grey")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/21086_product_image1000x1000png.png"})),e("span",{class:"grid-element-title"},"Apple MagSafe charger")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/Apple-Display-1024x758-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Apple Studio Display")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/eugoods_09_451646_copy_3-transformed.png"})),e("span",{class:"grid-element-title"},"Uniqlo Dry Stretch Hoodie")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/15c3a2b57d3441c0a789498c5f78af39-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Blundstone 585 CLASSIC")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/MN713_AV1-removebg-preview-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Apple Thunderbolt 4 Pro Cable (1.8 m)")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/arket_shirt-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Arket Black Cotton Silk Overshirt")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/image_1-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Tesla Model 3")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/LEGO-Batman-76240-Batmobile-Tumbler-2-768x432.png"})),e("span",{class:"grid-element-title"},"Lego Batman Tumbler")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/uniqlo-black-men-supima-cotton-crew-neck-short-sleeve-t-shirt-product-0-613021972-normal-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Uniqlo Black Supima\xAE Cotton Tshirt")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"https://cdn2.easycosmetic.nl/images/Produkte/D2/chanel-egoiste-platinum-edt-vapo-50ml.png"})),e("span",{class:"grid-element-title"},"Chanel \xC9go\xEFste Platinum")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/10001_2Y2_ALT100-1300x514.png"})),e("span",{class:"grid-element-title"},"Crocs Slides Bone")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/MLL82_AV1-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Apple USB-C Charging Cable (2 m)")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/Herman-Miller-Cosm-Chair-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Herman Miller Cosm")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/MWP22-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Apple Airpods Pro")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"https://cdn.shopify.com/s/files/1/0090/1329/7207/products/Reuzel-Azul-01_700x.png?v=1604982073"})),e("span",{class:"grid-element-title"},"Reuzel Hair Pomade")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/s03h03e04c02_mlpng-removebg-preview.png"})),e("span",{class:"grid-element-title"},"AIAIAI TMA-2")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"https://img01.ztat.net/article/spp-media-p1/e32efe2833ac464e80746e0d91d3b121/54bfe36321604089ad77473913dd3bcb.jpg?imwidth=1800&filter=packshot"})),e("span",{class:"grid-element-title"},"Selected Homme Black Chino")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"https://assets.mmsrg.com/isr/166325/c1/-/ASSET_MMS_88212433/fee_786_587_png"})),e("span",{class:"grid-element-title"},"Apple 67W USB-C Power Adapter")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/image-1-3197972026-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Samsung Portable SSD T5")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/36703-jordan-green-clean-toothbrush-medium-1-pcs-20181005-144006-big-2x-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Jordan Medium Toothbrush")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"https://img01.ztat.net/article/spp-media-p1/15faacd4ee5b3175b9d804e7a3e23b40/599a337175d34bcea4d5172e63743a5e.jpg?imwidth=1800&filter=packshot"})),e("span",{class:"grid-element-title"},"Camano Soft Sneaker Socks")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/dpwlqkddlbkmbjrnmwzc_copy-transformed.png"})),e("span",{class:"grid-element-title"},"ON Running Cloud Ultra")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"https://img01.ztat.net/article/spp-media-p1/b4e1ae9d99133c819dea3e5ad8161fd3/bc85fe3732f04eec8240746a46f5634d.jpg?filter=packshot&imwidth=169"})),e("span",{class:"grid-element-title"},"Calvin Clein Trunks")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/149c87dd45d248d78b0214c1710f6a0d-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Massimo Dutti Black Sweater")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/arket-shorts-preview.png"})),e("span",{class:"grid-element-title"},"Arket Cotton-Linen Drawstring Shorts")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/14fdb864-12fa-444a-bdd5-8f5a1d530e16_1.cf1beb728c4aea8629b59d2dd78e9efb-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Wenger Tandem Backpack")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/7ZCI_JK3_alt20-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Northface STOLEMBERG 3L DRYVENT\u2122")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/car-k121-blk-xl_carhartt-midweight-hooded-sweatshirt-black-xl-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Carhartt Midweight Black Hoodie")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/7085474_1-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Witchen Maleta Travel Suitcase")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/loake-wadham-mens-oxford-shoes-black-SIDE-min-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Loake Black Oxford Shoes")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/apple-magic-keyboard_ie5613479-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Apple Magic Keyboard")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/b2b5223c-eed6-4381-b16f-21536e506004-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Timberland 6 Inch Black Winter Boots")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/2-47-2046x2048-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Logitech G305")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/Hp0eBgPHWhV27DeVnFIVka-30-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Vishy 72H Black Deodorant")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/27un880-b-1-1200x1200-removebg-preview.png"})),e("span",{class:"grid-element-title"},"LG Ultrafine 4K 27UN880")),e("div",{class:"grid-element"},e("div",{class:"grid-element-image"},e("img",{class:"grid-element-image-img",src:"assets/9c2e62b46ba4492ab1ca15f1fabfaa7e-removebg-preview.png"})),e("span",{class:"grid-element-title"},"Massimo Dutti Slim Fit Oxford Shirt")))}};var _=`.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  max-width: 576px;
+  padding: 48px;
+}
+
+.item a {
+  color: var(--subtext-color);
+}
+
+h1 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+h2 {
+  font-size: 14px;
+  font-weight: 450;
+  margin: 0;
+}
+
+span {
+  color: var(--subtext-color);
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    align-items: start;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: var(--dark-text-color);
+    background: #000;
+  }
+
+  a {
+    color: var(--dark-text-color);
+    text-decoration-color: var(--dark-border-color);
+  }
+
+  a:hover {
+    text-decoration-color: var(--dark-text-color);
+  }
+}
+`;var v=class extends m{static{l(this,"Year2023Page")}styles=_;render(){return e("div",{class:"container"},e("main",null,e("div",{class:"header"},e("h1",null,"2023 in review (work in progress)"),e("span",null,"by Michael Jach")),e("div",{class:"item"},e("h2",null,"Best music album"),e("span",null,"Let's start here - Lil Yachty")),e("div",{class:"item"},e("h2",null,"Best artist"),e("span",null,"Hudson Mohawke")),e("div",{class:"item"},e("h2",null,"Best game"),e("span",null,"Cyberpunk 2077 2.0")),e("div",{class:"item"},e("h2",null,"Best movie"),e("span",null,"-")),e("div",{class:"item"},e("h2",null,"Best TV series"),e("span",null,"Succession Severance Get Gotti")),e("div",{class:"item"},e("h2",null,"Best podcast episode"),e("span",null,"The Really Good Podcast | Mark Cuban Lex Fridman Mark Zuckerberg")),e("div",{class:"item"},e("h2",null,"Best book"),e("span",null,"Adolf Hitler Biography - Bronis\u0142aw Kurzweil")),e("div",{class:"item"},e("h2",null,"Best hardware innovation"),e("span",null,"4K/60 ProRes Log on iPhone 15 Pro")),e("div",{class:"item"},e("h2",null,"Best software innovation"),e("span",null,"ChatGPT 5")),e("div",{class:"item"},e("h2",null,"Best tech blopper"),e("span",null,"Twitter rebrand to X Next.js SQL")),e("div",{class:"item"},e("h2",null,"Best personal blopper"),e("span",null,"Krzysztof Gonciarz drugs/use of women")),e("div",{class:"item"},e("h2",null,"Best comback story"),e("span",null,"Cyberpunk 2077 Atrioc AI porn")),e("div",{class:"item"},e("h2",null,"Best meme"),e("a",{href:"https://twitter.com/cachedeposits/status/1650534793287806978"},"Link \u2192"))))}};var x=class extends m{static{l(this,"AppComponent")}render(){return e(h,{routes:{"/":e(g,null),"/items":e(p,null),"/2023":e(v,null)}})}};u(x,document.body);

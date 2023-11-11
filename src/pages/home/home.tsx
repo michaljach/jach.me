@@ -15,7 +15,8 @@ export default class HomePage extends Component {
 
           <div>
             I craft fast and beautiful user interfaces and apps using modern
-            technologies like <a href="https://react.dev/">React</a>, <a href="https://github.com/michaljach/htm0">htm0</a> or{" "}
+            technologies like <a href="https://react.dev/">React</a>,{" "}
+            <a href="https://github.com/michaljach/htm0">htm0</a> or{" "}
             <a href="https://developer.apple.com/xcode/swiftui/">SwiftUI</a>{" "}
             (iOS). I'm a huge believer in open source, you can check my code on{" "}
             <a href="https://github.com/michaljach">Github</a>. I share my
@@ -38,7 +39,7 @@ export default class HomePage extends Component {
 
             <ul class="items">
               <li class="item">
-                <a href="2023">
+                <a href="#2023">
                   <h3>2023 in review</h3>
                   <span>
                     My take on best movies, shows, music, artists and bloopers
@@ -48,7 +49,7 @@ export default class HomePage extends Component {
               </li>
 
               <li class="item">
-                <a href="items">
+                <a href="#items">
                   <h3>69 items</h3>
                   <span> I own 69 items. Here is the list. </span>
                 </a>

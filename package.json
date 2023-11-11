@@ -9,10 +9,9 @@
   "author": "Michael Jach",
   "license": "ISC",
   "dependencies": {
-    "htm0": "^0.1.2"
+    "htm0": "^0.1.4"
   },
   "devDependencies": {
-    "esbuild": "^0.19.5",
     "esbuild-plugin-copy": "^2.1.1"
   }
 }
