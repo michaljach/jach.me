@@ -15,6 +15,11 @@ main {
 .item a {
   color: var(--subtext-color);
 }
+.item-addon {
+  color: var(--subtext-color);
+  margin-top: 0.2rem;
+  font-size: 12px;
+}
 
 h1 {
   font-size: 14px;
@@ -23,13 +28,14 @@ h1 {
 }
 
 h2 {
+  color: var(--subtext-color);
   font-size: 14px;
   font-weight: 450;
   margin: 0;
 }
 
 span {
-  color: var(--subtext-color);
+  font-weight: 450;
 }
 
 @media only screen and (max-width: 768px) {
