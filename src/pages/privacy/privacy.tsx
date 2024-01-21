@@ -8,11 +8,11 @@ export default class PrivacyPage extends Component {
           <p className="text-2xl">Privacy Policy</p>
           <p>1. OUR DETAILS AS THE DATA CONTROLLER AND APP DEVELOPER</p>
           <p>
-            Podium Application (the &apos;App&apos;) and Podium for Business are
-            brought to you by ink.community Company (the &apos;Data Controller
-            and App Developer&apos; of your personal data). Consequently,
-            &apos;We&apos;, &apos;Us&apos; and &apos;Ours&apos; refers to the
-            Data Controller and App Developer.
+            Local Brain Application (the &apos;App&apos;) and Local Brain for
+            Business are brought to you by ink.community Company (the &apos;Data
+            Controller and App Developer&apos; of your personal data).
+            Consequently, &apos;We&apos;, &apos;Us&apos; and &apos;Ours&apos;
+            refers to the Data Controller and App Developer.
           </p>
 
           <p>2. INFORMATION WE COLLECT AND HOW WE USE THIS INFORMATION</p>
@@ -103,7 +103,7 @@ export default class PrivacyPage extends Component {
             date at the bottom of this privacy policy to indicate the latest
             revision, as well as the changes were made.
           </p>
-          <p className="footer">© 2022 Podium, podium.town</p>
+          <p className="footer">© 2024 Local Brain, jach.me</p>
         </div>
       </div>
     );
