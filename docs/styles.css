@@ -1,0 +1,35 @@
+:root {
+  --text-color: #fff;
+  --subtext-color: #6d6d6d;
+  --background-color: #000;
+}
+
+html {
+  margin: 0;
+}
+
+body {
+  font-family: "Wix Madefor Text", sans-serif;
+  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+}
+
+main {
+  max-width: 768px;
+}
+
+h1 {
+  font-size: 14px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+span {
+  font-size: 14px;
+  color: var(--subtext-color);
+}
