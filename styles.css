@@ -1,7 +1,16 @@
 :root {
   --text-color: #fff;
-  --subtext-color: #6d6d6d;
-  --background-color: #000;
+  --subtext-color: #888;
+  --muted-color: #333;
+  --background-color: #010101;
+}
+
+@font-face {
+  font-family: sf pro display;
+  font-style: normal;
+  font-weight: 400;
+  src: local("SF Pro Display"),
+    url(./assets/SFPRODISPLAYREGULAR.woff) format("woff");
 }
 
 html {
@@ -9,27 +18,53 @@ html {
 }
 
 body {
-  font-family: "Wix Madefor Text", sans-serif;
+  font-family: "SF Pro Display", sans-serif;
   margin: 0;
   background-color: var(--background-color);
   color: var(--text-color);
   display: flex;
   justify-content: center;
-  align-items: center;
+  flex-direction: column;
   min-height: 100dvh;
 }
 
 main {
-  max-width: 768px;
+  max-width: 90%;
+  padding: 0 10%;
+}
+
+footer {
+  color: var(--muted-color);
+  max-width: 90%;
+  padding: 0 10%;
+  margin-top: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+footer a {
+  color: var(--text-color);
+  text-decoration: none;
+  margin-left: 2rem;
+}
+
+footer a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 h1 {
-  font-size: 14px;
+  font-size: 40px;
+  font-weight: 400;
   margin: 0;
-  text-transform: uppercase;
 }
 
-span {
-  font-size: 14px;
+h2 {
+  font-size: 13px;
+  margin: 0;
+  margin-bottom: 8px;
+  text-transform: uppercase;
   color: var(--subtext-color);
 }
