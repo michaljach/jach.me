@@ -1,16 +1,12 @@
 :root {
   --text-color: #fff;
-  --subtext-color: #888;
   --muted-color: #5c5c5c;
   --background-color: #010101;
 }
 
 @font-face {
   font-family: NeueMontreal;
-  font-style: normal;
-  font-weight: 400;
-  src: local("NeueMontreal"),
-    url(./assets/NeueMontreal-Regular.otf) format("otf");
+  src: url("./assets/NeueMontreal-Regular.otf") format("otf");
 }
 
 html {
@@ -30,18 +26,25 @@ body {
 }
 
 .container {
+  min-height: 100dvh;
   width: 100%;
   max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+header {
+  padding: 3rem;
 }
 
 section {
-  padding: 0 24px;
+  padding: 0 3rem;
 }
 
 footer {
   color: var(--muted-color);
-  padding: 0 24px;
-  margin-top: 12rem;
+  padding: 3rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -68,8 +71,6 @@ h1 {
 h2 {
   font-size: 13px;
   margin: 0;
-  margin-bottom: 8px;
   text-transform: uppercase;
-  color: var(--subtext-color);
   font-weight: 400;
 }
