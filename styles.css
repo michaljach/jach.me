@@ -29,17 +29,18 @@ body {
   min-height: 100dvh;
 }
 
-main {
+.container {
+  width: 100%;
   max-width: 1200px;
-  width: 90%;
-  padding: 0 10%;
+}
+
+section {
+  padding: 0 24px;
 }
 
 footer {
   color: var(--muted-color);
-  max-width: 1200px;
-  width: 90%;
-  padding: 0 10%;
+  padding: 0 24px;
   margin-top: 12rem;
   display: flex;
   align-items: center;
