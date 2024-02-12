@@ -23,19 +23,22 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   display: flex;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
   min-height: 100dvh;
 }
 
 main {
-  max-width: 90%;
+  max-width: 1200px;
+  width: 90%;
   padding: 0 10%;
 }
 
 footer {
   color: var(--muted-color);
-  max-width: 90%;
+  max-width: 1200px;
+  width: 90%;
   padding: 0 10%;
   margin-top: 12rem;
   display: flex;
