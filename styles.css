@@ -49,12 +49,17 @@ footer {
   align-items: center;
   justify-content: space-between;
   font-size: 14px;
+  flex-wrap: wrap-reverse;
+}
+
+footer div {
+  display: flex;
+  gap: 2rem;
 }
 
 footer a {
   color: var(--text-color);
   text-decoration: none;
-  margin-left: 2rem;
 }
 
 footer a:hover {
@@ -102,5 +107,12 @@ div img {
 @media only screen and (max-width: 768px) {
   .grid-container {
     column-count: 1;
+  }
+
+  footer div {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
   }
 }
