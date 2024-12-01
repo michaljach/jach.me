@@ -1,12 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap");
+
 :root {
   --text-color: #fff;
   --muted-color: #767676;
   --background-color: #010101;
-}
-
-@font-face {
-  font-family: NeueMontreal;
-  src: url("./assets/NeueMontreal-Regular.otf") format("otf");
 }
 
 html {
@@ -14,7 +11,7 @@ html {
 }
 
 body {
-  font-family: "NeueMontreal", sans-serif;
+  font-family: "Instrument Sans", sans-serif;
   margin: 0;
   background-color: var(--background-color);
   color: var(--text-color);
@@ -35,16 +32,26 @@ body {
 }
 
 header {
-  padding: 3rem;
+  padding: 54px;
 }
 
 section {
-  padding: 0 3rem;
+  padding: 0 54px;
+  max-width: 36rem;
+}
+
+section a {
+  color: var(--muted-color);
+}
+
+section a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 footer {
   color: var(--muted-color);
-  padding: 3rem;
+  padding: 54px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -54,7 +61,7 @@ footer {
 
 footer div {
   display: flex;
-  gap: 2rem;
+  gap: 24px;
 }
 
 footer a {
@@ -68,7 +75,7 @@ footer a:hover {
 }
 
 h1 {
-  font-size: 40px;
+  font-size: 32px;
   font-weight: 400;
   margin: 0;
 }
@@ -113,6 +120,6 @@ div img {
     display: flex;
     gap: 1rem;
     width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: 24px;
   }
 }
