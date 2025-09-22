@@ -35,20 +35,6 @@ header {
   padding: 54px;
 }
 
-section {
-  padding: 0 54px;
-  max-width: 36rem;
-}
-
-section a {
-  color: var(--muted-color);
-}
-
-section a:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
 footer {
   color: var(--muted-color);
   padding: 54px;
@@ -74,12 +60,6 @@ footer a:hover {
   text-underline-offset: 4px;
 }
 
-h1 {
-  font-size: 32px;
-  font-weight: 400;
-  margin: 0;
-}
-
 h2 {
   font-size: 13px;
   margin: 0;
@@ -92,30 +72,7 @@ a {
   text-decoration: none;
 }
 
-.grid-container {
-  padding: 0 3rem;
-  column-count: 3;
-  column-gap: 1rem;
-}
-
-.grid-container div {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  margin-bottom: 1rem;
-  break-inside: avoid;
-}
-
-div img {
-  width: 100%;
-  grid-row: 1 / -1;
-  grid-column: 1;
-}
-
 @media only screen and (max-width: 768px) {
-  .grid-container {
-    column-count: 1;
-  }
-
   footer div {
     display: flex;
     gap: 1rem;
