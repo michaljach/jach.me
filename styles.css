@@ -28,7 +28,7 @@ body {
   max-width: 1200px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: end;
 }
 
 header {
@@ -37,9 +37,9 @@ header {
 
 footer {
   color: var(--muted-color);
-  padding: 54px;
+  padding: 72px;
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: space-between;
   font-size: 14px;
   flex-wrap: wrap-reverse;
@@ -48,6 +48,12 @@ footer {
 footer div {
   display: flex;
   gap: 24px;
+}
+
+footer section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 footer a {
