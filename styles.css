@@ -29,6 +29,15 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: end;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 }
 
 header {
@@ -37,12 +46,22 @@ header {
 
 footer {
   color: var(--muted-color);
-  padding: 72px;
+  padding-top: 72px;
+  padding-bottom: 72px;
+  padding-left: 72px;
+  padding-right: 72px;
   display: flex;
   align-items: end;
   justify-content: space-between;
   font-size: 14px;
   flex-wrap: wrap-reverse;
+}
+
+@media (max-width: 600px) {
+  footer {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
 }
 
 footer div {
