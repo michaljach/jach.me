@@ -29,14 +29,14 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: end;
-  padding-left: 32px;
-  padding-right: 32px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 @media (max-width: 600px) {
   .container {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
