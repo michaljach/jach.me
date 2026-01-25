@@ -33,17 +33,6 @@ body {
   padding-right: 0;
 }
 
-@media (max-width: 600px) {
-  .container {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
-header {
-  padding: 54px;
-}
-
 footer {
   color: var(--muted-color);
   padding-top: 72px;
@@ -82,13 +71,6 @@ footer a {
 footer a:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
-}
-
-h2 {
-  font-size: 13px;
-  margin: 0;
-  text-transform: uppercase;
-  font-weight: 400;
 }
 
 a {
