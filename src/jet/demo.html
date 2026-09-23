@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jet Demo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="wide">
+<nav aria-label="Main"><a href="./">jet</a><a href="demos.html" aria-current="page">Demos</a><a href="docs.html">Docs</a><a href="https://github.com/michaljach/jet">GitHub</a></nav>
+
+<p><a href="demos.html">← All demos</a></p>
+<h1>Demo</h1>
+<p>Run Jet on your browser’s GPU, or connect a <a href="docs.html#run">Jet server</a>. Pick an example or edit
+the payload, then run it. Hover an answer to see which part of the request it came from.</p>
+<p class="controls">
+  <label>Server <input id="server" size="22" spellcheck="false"></label>
+  <label>API key <input id="key" type="password" size="10" placeholder="optional"></label>
+  <span id="conn" class="muted"></span>
+</p>
+<p id="examples">Examples: </p>
+<p>Or <a href="chess.html">play a full game of chess against Jet</a>, or <a href="runner.html">watch it play the dinosaur game</a>.</p>
+
+<div class="cols">
+<section>
+  <h2>Request <span class="muted">· POST /v1/decide</span></h2>
+  <div class="editor"><div id="backdrop" aria-hidden="true"></div><textarea id="payload" rows="10" spellcheck="false"></textarea></div>
+  <p class="controls">
+    <button id="run">Run</button>
+    <span class="muted">Ctrl/⌘+Enter</span>
+  </p>
+</section>
+
+<section>
+  <h2>Response</h2>
+  <p id="status" class="muted">Not run yet.</p>
+  <div id="answers"></div>
+  <details id="raw" hidden><summary>Raw JSON</summary><pre id="res"></pre></details>
+</section>
+</div>
+
+<script type="module">
+import {decide, setupConnection} from "./api.js";
+
+const EXAMPLES = {
+  support: {
+    title: "Support triage",
+    state: "I was charged twice this month and nobody answers my emails. If this isn't fixed by Friday I'm cancelling.",
+    questions: {
+      topic: {type: "choice", instructions: "What is the primary issue?",
+        criteria: {billing: "billing or payment problem", bug: "the product is broken", account: "login or account access", other: "something else"}},
+      severity: {type: "score", instructions: "How urgent is this?",
+        criteria: ["routine", "handle today", "urgent", "critical, about to churn"]},
+      escalate: {type: "noul", instructions: "Escalate to a human immediately?"}
+    }
+  },
+  review: {
+    title: "Product review",
+    state: "Battery lasts about two days, which is great, but the screen scratches if you look at it wrong. Shipping took three weeks.",
+    questions: {
+      stars: {type: "score", instructions: "How many stars would this reviewer give?",
+        criteria: ["1 star", "2 stars", "3 stars", "4 stars", "5 stars"]},
+      aspect: {type: "choice", instructions: "Which aspect does the reviewer complain about most?",
+        criteria: {battery: "battery life", screen: "screen or display", shipping: "shipping and delivery", price: "price"}},
+      recommend: {type: "noul", instructions: "Would the reviewer recommend this product?"}
+    }
+  },
+  moderation: {
+    title: "Moderation",
+    state: "You people are idiots, every single one of you. Get off this forum.",
+    questions: {
+      toxic: {type: "noul", instructions: "Is this comment toxic?"},
+      kind: {type: "choice", instructions: "What kind of comment is this?",
+        criteria: {insult: "insults or attacks people", threat: "threatens violence", spam: "advertising or spam", fine: "acceptable comment"}},
+      severity: {type: "score", instructions: "How severe is it?",
+        criteria: ["harmless", "mildly rude", "offensive", "severe"]}
+    }
+  },
+  intent: {
+    title: "Intent routing",
+    state: "hey can you set an alarm for 6:30 tomorrow morning",
+    questions: {
+      intent: {type: "choice", instructions: "What does the user want?",
+        criteria: {alarm_set: "set an alarm", weather: "ask about the weather", music: "play music",
+          calendar: "add or check a calendar event", timer: "start a timer", other: "something else"}}
+    }
+  },
+  nli: {
+    title: "Entailment",
+    state: {premise: "A man is playing a guitar on stage in front of a crowd.", hypothesis: "Someone is performing music."},
+    questions: {
+      relation: {type: "choice", instructions: "How does the hypothesis relate to the premise?",
+        criteria: {entailment: "the premise implies the hypothesis", neutral: "neither implies nor contradicts",
+          contradiction: "the premise contradicts the hypothesis"}}
+    }
+  },
+  chess: {
+    title: "Chess move",
+    state: {
+      moves: "1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6",
+      to_move: "white",
+      fen: "r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",
+      board: [
+        "8 r . b q k b . r",
+        "7 p p p p . p p p",
+        "6 . . n . . n . .",
+        "5 . . . . p . . Q",
+        "4 . . B . P . . .",
+        "3 . . . . . . . .",
+        "2 P P P P . P P P",
+        "1 R N B . K . N R",
+        "  a b c d e f g h"
+      ]
+    },
+    questions: {
+      best_move: {type: "choice", instructions: "What is the best move for the side to move?",
+        criteria: {Qxf7: "queen takes the pawn on f7", Qxe5: "queen takes the pawn on e5", Bxf7: "bishop takes the pawn on f7",
+          Nc3: "knight to c3", d3: "pawn to d3", Qe2: "queen retreats to e2"}},
+      mate: {type: "noul", instructions: "Does the side to move have checkmate in one?"},
+      eval: {type: "score", instructions: "How good is the position for white?",
+        criteria: ["black is winning", "black is better", "equal", "white is better", "white is winning"]}
+    }
+  }
+};
+
+const $ = (id) => document.getElementById(id);
+const payloadEl = $("payload");
+const pct = (p) => (p * 100).toFixed(1) + "%";
+
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  e.append(...kids);
+  return e;
+}
+
+// Where each object member / array element sits in the payload text, keyed by its
+// JSON path, so a hovered answer can highlight the part of the request it came from.
+function locate(text) {
+  const spans = new Map();
+  let i = 0;
+  const ws = () => { while (/\s/.test(text[i] ?? "")) i++; };
+  const str = () => {
+    const start = i++;
+    while (i < text.length && text[i] !== '"') i += text[i] === "\\" ? 2 : 1;
+    return JSON.parse(text.slice(start, ++i));
+  };
+  const value = (path) => {
+    ws();
+    const c = text[i];
+    if (c === "{" || c === "[") {
+      const close = c === "{" ? "}" : "]";
+      i++; ws();
+      for (let n = 0; text[i] !== close; n++) {
+        ws();
+        const start = i;
+        let key = n;
+        if (c === "{") { key = str(); ws(); i++; }
+        value([...path, key]);
+        spans.set(JSON.stringify([...path, key]), [start, i]);
+        ws();
+        if (text[i] === ",") i++;
+      }
+      i++;
+    } else if (c === '"') str();
+    else while (i < text.length && !/[\s,\]}]/.test(text[i])) i++;
+  };
+  value([]);
+  return spans;
+}
+
+const escHtml = (t) => t.replace(/[&<]/g, (c) => (c === "&" ? "&amp;" : "&lt;"));
+
+function highlight(qPath, oPath) {
+  const text = payloadEl.value;
+  let q, o;
+  try { JSON.parse(text); const spans = locate(text); q = qPath && spans.get(JSON.stringify(qPath)); o = oPath && spans.get(JSON.stringify(oPath)); } catch {}
+  if (!q) { $("backdrop").textContent = text + " "; return; }
+  const cut = [0, q[0], ...(o ? o : []), q[1], text.length];
+  const part = (a, b) => escHtml(text.slice(cut[a], cut[b]));
+  $("backdrop").innerHTML = o
+    ? `${part(0, 1)}<mark class="q">${part(1, 2)}<mark class="o">${part(2, 3)}</mark>${part(3, 4)}</mark>${part(4, 5)} `
+    : `${part(0, 1)}<mark class="q">${part(1, 2)}</mark>${part(2, 3)} `;
+}
+
+function grow() {
+  payloadEl.style.height = "auto";
+  payloadEl.style.height = payloadEl.scrollHeight + 2 + "px";
+  highlight();
+}
+
+function probTable(name, rows, keys, best) {
+  return el("table", {class: "probs"}, ...rows.map(([label, p], i) => el("tr", keys ? {class: i === best ? "best" : "", "data-o": JSON.stringify(["questions", name, "criteria", keys[i]])} : (i === best ? {class: "best"} : {}),
+    el("td", {}, label),
+    el("td", {}, el("span", {class: "bar", style: `width:${Math.round(p * 160)}px`})),
+    el("td", {class: "num"}, pct(p)),
+  )));
+}
+
+function render(questions, data) {
+  const box = $("answers");
+  box.innerHTML = "";
+  for (const [name, a] of Object.entries(data.answers)) {
+    const q = questions[name];
+    let rows, line, keys = null;
+    if (a.type === "choice") {
+      rows = Object.entries(a.probabilities);
+      keys = rows.map((r) => r[0]);
+      line = a.choice;
+    } else if (a.type === "score") {
+      rows = q.criteria.map((c, i) => [c, a.probabilities[i]]);
+      keys = rows.map((_, i) => i);
+      line = `${a.level} · score ${a.score.toFixed(2)} on 0–${q.criteria.length - 1}`;
+    } else {
+      rows = [["yes", a.probability], ["no", 1 - a.probability]];
+      line = `P(yes) ${pct(a.probability)}`;
+    }
+    const probs = rows.map((r) => r[1]);
+    box.append(el("div", {class: "answer", "data-q": JSON.stringify(["questions", name])},
+      el("h3", {}, name, el("span", {class: "muted"}, ` · ${a.type} · confidence ${a.confidence.toFixed(2)}`)),
+      el("p", {}, line),
+      probTable(name, rows, keys, probs.indexOf(Math.max(...probs))),
+    ));
+  }
+}
+
+function fail(msg) {
+  $("status").textContent = "";
+  $("answers").innerHTML = "";
+  $("answers").append(el("p", {class: "err"}, msg));
+  $("raw").hidden = true;
+}
+
+async function run() {
+  let body;
+  try { body = JSON.parse(payloadEl.value); }
+  catch (e) { return fail("The payload isn't valid JSON: " + e.message); }
+
+  $("run").disabled = true;
+  $("status").textContent = "running…";
+  try {
+    const data = await decide(body);
+    $("status").textContent = `${data.latency_ms} ms · ${data.usage.input_tokens} input tokens · ${data.model}`;
+    render(body.questions, data);
+    $("res").textContent = JSON.stringify(data, null, 2);
+    $("raw").hidden = false;
+  } catch (e) {
+    fail(e.message);
+  } finally {
+    $("run").disabled = false;
+  }
+}
+
+setupConnection();
+$("run").addEventListener("click", run);
+payloadEl.addEventListener("input", grow);
+$("answers").addEventListener("mouseover", (e) => {
+  const q = e.target.closest("[data-q]"), o = e.target.closest("[data-o]");
+  document.querySelectorAll("#answers .hl").forEach((x) => x.classList.remove("hl"));
+  [q, o].forEach((x) => x?.classList.add("hl"));
+  highlight(q && JSON.parse(q.dataset.q), o && JSON.parse(o.dataset.o));
+});
+$("answers").addEventListener("mouseleave", () => {
+  document.querySelectorAll("#answers .hl").forEach((x) => x.classList.remove("hl"));
+  highlight();
+});
+document.addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) run(); });
+
+Object.entries(EXAMPLES).forEach(([id, ex], i) => {
+  if (i) $("examples").append(" · ");
+  $("examples").append(el("a", {href: "#" + id}, ex.title));
+});
+
+function load() {
+  const {state, questions} = EXAMPLES[location.hash.slice(1)] || EXAMPLES.support;
+  payloadEl.value = JSON.stringify({state, questions}, null, 2);
+  grow();
+  $("status").textContent = "Not run yet.";
+  $("answers").innerHTML = "";
+  $("raw").hidden = true;
+}
+window.addEventListener("hashchange", load);
+load();
+</script>
+</body>
+</html>

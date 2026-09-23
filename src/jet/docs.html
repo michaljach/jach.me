@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jet Docs</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav aria-label="Main"><a href="./">jet</a><a href="demos.html">Demos</a><b aria-current="page">Docs</b><a href="https://github.com/michaljach/jet">GitHub</a></nav>
+
+<h1>Docs</h1>
+<p>
+  <a href="#browser">Browser GPU</a> · <a href="#run">Running the server</a> ·
+  <a href="#auth">Authentication</a> ·
+  <a href="#decide">POST /v1/decide</a> ·
+  <a href="#types">Question types</a> ·
+  <a href="#response">Response</a> ·
+  <a href="#errors">Errors</a> ·
+  <a href="#health">GET /health</a> ·
+  <a href="#clients">Clients</a> ·
+  <a href="#training">Training your own</a>
+</p>
+
+<h2 id="browser">Browser GPU</h2>
+<p>On any demo, choose <b>Browser GPU</b> and click <b>Load Jet · 791 MB</b>. On the homepage,
+select Jet as the player first. The model downloads only after you click, and the browser caches it
+when storage allows. After loading, requests run on your device without an inference server or API key.
+Use Cancel during loading or Unload to release the model.</p>
+<p>WebGPU requires a compatible browser and GPU with enough available memory. If loading fails,
+select <b>Server</b>. Speed depends on your device; a server GPU may be faster.
+Browser inference limits state text to 2048 tokens (keeping the beginning and end),
+with a maximum complete prompt of 4096 tokens. The quantized model’s probabilities may differ
+slightly from the server model. Each page loads its own GPU session, using the cached download.</p>
+
+<h2 id="run">Running the server</h2>
+<p>Jet runs on your machine. Clone <a href="https://github.com/michaljach/jet">the repo</a>, train or
+fuse a model (see <a href="#training">Training your own</a>), then:</p>
+<pre><code>uv sync
+JET_API_KEY=secret uv run jet-serve --base-model models/jet \
+  --cors-origin https://jach.me</code></pre>
+<p>The API is then on <code>http://127.0.0.1:8000</code>. <code>--cors-origin</code> lets the
+<a href="demo.html">demo</a> and <a href="chess.html">chess</a> pages on this site call it from your
+browser; set their Server field if it runs somewhere else. You can also link to a page with
+<code>?server=http://host:port</code>. Chrome asks once for permission to reach your local network.</p>
+<table>
+<tr><th>flag</th><th>env</th><th>default</th></tr>
+<tr><td><code>--base-model</code></td><td><code>JET_BASE_MODEL</code></td><td><code>mlx-community/Qwen3-0.6B-bf16</code></td></tr>
+<tr><td><code>--adapter</code></td><td><code>JET_ADAPTER</code></td><td>none</td></tr>
+<tr><td><code>--model-name</code></td><td></td><td><code>jet-local-0.1</code></td></tr>
+<tr><td><code>--host</code></td><td></td><td><code>127.0.0.1</code></td></tr>
+<tr><td><code>--port</code></td><td></td><td><code>8000</code></td></tr>
+<tr><td><code>--cors-origin</code></td><td><code>JET_CORS_ORIGINS</code></td><td>none; repeatable, or comma-separated in the env var</td></tr>
+</table>
+<p>Point <code>--base-model</code> at a fused model (<code>models/jet</code>), or pass the base model plus
+<code>--adapter adapters/jet</code>. Calibration is read from <code>calibration.json</code> in either
+directory. Requests are served one at a time on a single worker thread.</p>
+
+<h2 id="auth">Authentication</h2>
+<p>If <code>JET_API_KEY</code> is set, every request to <code>/v1/decide</code> needs the header
+<code>Authorization: Bearer &lt;key&gt;</code>. Without it, the endpoint is open.</p>
+
+<h2 id="decide">POST /v1/decide</h2>
+<p>Ask one or more questions about one state. The request shape is compatible with
+<a href="https://jevtypesafeai.com/">Jev</a>.</p>
+<table>
+<tr><th>field</th><th>type</th><th></th></tr>
+<tr><td><code>state</code></td><td>string, object or array</td><td>What the questions are about. Objects are rendered as JSON; an array of strings is joined with blank lines.</td></tr>
+<tr><td><code>questions</code></td><td>object</td><td>Named questions, 1–64. The names come back as keys in <code>answers</code>.</td></tr>
+<tr><td><code>model</code></td><td>string, optional</td><td><code>jet-latest</code>, <code>jev-latest</code> or the server's model name.</td></tr>
+</table>
+<p>Each question has a <code>type</code>, an <code>instructions</code> string, and for
+<code>choice</code> and <code>score</code>, <code>criteria</code>.</p>
+<p>States longer than 4,096 tokens are truncated in the middle rather than rejected.</p>
+
+<h2 id="types">Question types</h2>
+
+<h3>choice</h3>
+<p>Pick one of 2–255 options. <code>criteria</code> maps each key to a description.</p>
+<pre><code>{"type": "choice", "instructions": "What is the primary issue?",
+ "criteria": {"billing": "billing or payment problem", "bug": "the product is broken"}}</code></pre>
+<pre><code>{"type": "choice", "choice": "billing",
+ "probabilities": {"billing": 0.97, "bug": 0.03}, "confidence": 0.8}</code></pre>
+
+<h3>score</h3>
+<p>Place the state on an ordered scale of 2–10 levels, lowest first. <code>score</code> is the expected
+level index (0 to n−1), <code>level</code> is the most likely level, and <code>probabilities</code> is
+in the same order as <code>criteria</code>.</p>
+<pre><code>{"type": "score", "instructions": "How urgent is this?",
+ "criteria": ["routine", "handle today", "urgent", "critical"]}</code></pre>
+<pre><code>{"type": "score", "score": 2.1, "level": "urgent",
+ "probabilities": [0.05, 0.15, 0.45, 0.35], "confidence": 0.2}</code></pre>
+
+<h3>noul</h3>
+<p>A yes/no question. It takes no <code>criteria</code>. <code>probability</code> is the probability
+of yes.</p>
+<pre><code>{"type": "noul", "instructions": "Escalate to a human immediately?"}</code></pre>
+<pre><code>{"type": "noul", "probability": 0.81, "confidence": 0.3}</code></pre>
+
+<h2 id="response">Response</h2>
+<pre><code>{
+  "model": "jet-local-0.1",
+  "answers": { "&lt;name&gt;": { ... }, ... },
+  "usage": {"input_tokens": 316},
+  "latency_ms": 102.0
+}</code></pre>
+<p><code>confidence</code> is 1 minus the normalized entropy of the answer's distribution: 1 when all
+the probability is on one answer, 0 when it's spread evenly. Probabilities are temperature-calibrated
+per question type, so a 0.8 should be right about 80% of the time on data like the training set.</p>
+<p><code>input_tokens</code> counts every question's full prompt, but the shared state is only
+encoded once, so asking more questions about the same state is cheap.</p>
+
+<h2 id="errors">Errors</h2>
+<table>
+<tr><th>status</th><th>when</th></tr>
+<tr><td><code>400</code></td><td>Empty or more than 64 questions, an invalid question, or an unknown <code>model</code>.</td></tr>
+<tr><td><code>401</code></td><td>Missing or wrong API key.</td></tr>
+<tr><td><code>422</code></td><td>The body isn't valid JSON or is missing <code>state</code> / <code>questions</code>.</td></tr>
+</table>
+<p>Error bodies look like <code>{"detail": "invalid question: ..."}</code>.</p>
+
+<h2 id="health">GET /health</h2>
+<pre><code>{"status": "ok", "model": "jet-local-0.1"}</code></pre>
+<p>The server also publishes its OpenAPI schema at <code>/openapi.json</code>.</p>
+
+<h2 id="clients">Clients</h2>
+
+<h3>curl</h3>
+<pre><code>curl localhost:8000/v1/decide \
+  -H "Authorization: Bearer secret" -H "Content-Type: application/json" \
+  -d '{"state": "The package arrived crushed.",
+       "questions": {"refund": {"type": "noul", "instructions": "Should we offer a refund?"}}}'</code></pre>
+
+<h3>Python</h3>
+<pre><code>import httpx
+
+r = httpx.post(
+    "http://localhost:8000/v1/decide",
+    headers={"Authorization": "Bearer secret"},
+    json={
+        "state": "The package arrived crushed.",
+        "questions": {"refund": {"type": "noul", "instructions": "Should we offer a refund?"}},
+    },
+)
+print(r.json()["answers"]["refund"]["probability"])</code></pre>
+
+<h3>JavaScript</h3>
+<pre><code>const res = await fetch("http://localhost:8000/v1/decide", {
+  method: "POST",
+  headers: {"Authorization": "Bearer secret", "Content-Type": "application/json"},
+  body: JSON.stringify({
+    state: "The package arrived crushed.",
+    questions: {refund: {type: "noul", instructions: "Should we offer a refund?"}},
+  }),
+});
+const {answers} = await res.json();</code></pre>
+
+<h2 id="training">Training your own</h2>
+<pre><code>uv run jet-data-public                    # public datasets → data/public.jsonl
+uv run jet-split data/public.jsonl        # train / val / test
+uv run jet-train                          # LoRA on Qwen3-0.6B → adapters/jet
+uv run jet-calibrate --adapter adapters/jet
+uv run jet-fuse                           # → models/jet
+uv run jet-eval --adapter adapters/jet --data data/test.jsonl</code></pre>
+<p>Training runs on Apple Silicon (MLX) or on Linux with an NVIDIA GPU. The
+<a href="https://github.com/michaljach/jet#pipeline">README</a> covers the full pipeline, including
+Claude distillation and the benchmark against Jev.</p>
+</body>
+</html>

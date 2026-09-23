@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jet Runner</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="wide">
+<nav aria-label="Main"><a href="./">jet</a><a href="demos.html" aria-current="page">Demos</a><a href="docs.html">Docs</a><a href="https://github.com/michaljach/jet">GitHub</a></nav>
+
+<p><a href="demos.html">← All demos</a></p>
+<h1>Runner</h1>
+<p>Jet plays the offline dinosaur game. The page describes what is ahead in a sentence (the obstacle,
+and whether it is about to hit), and repeatedly asks Jet two questions: a <code>noul</code>,
+"is an obstacle about to hit?", and a <code>choice</code>, "how does the dinosaur get past it?"
+(jump, duck or keep running). When Jet says yes, the dinosaur does the move Jet picked. Moves are sent
+to Jet on your browser’s GPU or a <a href="docs.html#run">Jet server</a>.</p>
+<p class="controls" id="connection">
+  <label>Server <input id="server" size="22" spellcheck="false"></label>
+  <label>API key <input id="key" type="password" size="10" placeholder="optional"></label>
+  <span id="conn" class="muted"></span>
+</p>
+
+<canvas id="game" class="runner" width="600" height="160" tabindex="0" aria-label="Dinosaur game. Space or up arrow to jump, down arrow to duck."></canvas>
+<p class="controls">
+  <button id="start">Start</button>
+  <label>Player <select id="player"><option value="jet">Jet</option><option value="you">You</option></select></label>
+  <label>Speed <select id="pace"><option value="1">1×</option><option value="0.5" selected>½×</option><option value="0.25">¼×</option></select></label>
+  <span id="keys" class="muted" hidden>Space or ↑ to jump, ↓ to duck. Tap the game to jump.</span>
+</p>
+
+<p id="manual-controls" class="controls" hidden><button id="jump" type="button">Jump</button><button id="duck" type="button">Hold to duck</button></p>
+<div class="cols">
+<section>
+  <h2>Runs</h2>
+  <table class="probs">
+    <tr><td>Score</td><td class="num" id="score">0</td></tr>
+    <tr><td>Best</td><td class="num" id="best">0</td></tr>
+    <tr><td>Runs</td><td class="num" id="runs">0</td></tr>
+    <tr><td>Decisions</td><td class="num" id="decisions">0</td></tr>
+    <tr><td>Latency</td><td class="num" id="latency">–</td></tr>
+  </table>
+  <p id="error" class="err"></p>
+</section>
+<section id="jet-details">
+  <h2>Jet's last decision</h2>
+  <div id="decision"><p class="muted">Not playing yet.</p></div>
+  <details id="raw" hidden>
+    <summary>Raw JSON</summary>
+    <h3>Request</h3><pre id="req"></pre>
+    <h3>Response</h3><pre id="res"></pre>
+  </details>
+</section>
+</div>
+
+<script type="module" src="runner.js"></script>
+</body>
+</html>

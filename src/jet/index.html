@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jet</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav aria-label="Main"><b aria-current="page">jet</b><a href="demos.html">Demos</a><a href="docs.html">Docs</a><a href="https://github.com/michaljach/jet">GitHub</a></nav>
+
+<h1>Jet</h1>
+<p>A small decision model. You send a <b>state</b> and some named, typed <b>questions</b>, and you get
+calibrated, typed answers back. Jet doesn't generate text, so there's nothing to parse and it can't
+return an answer outside the type you asked for.</p>
+
+<p><a href="demos.html">Explore the demos</a> · <a href="docs.html">Read the docs</a></p>
+
+<section class="homepage-game" id="dinosaur-heading" aria-label="Dinosaur game">
+<p class="controls" id="connection" hidden>
+  <label>Server <input id="server" size="22" spellcheck="false"></label>
+  <label>API key <input id="key" type="password" size="10" placeholder="optional"></label>
+  <span id="conn" class="muted"></span>
+</p>
+
+<canvas id="game" class="runner" width="600" height="160" tabindex="0" aria-label="Dinosaur game. Space or up arrow to jump, down arrow to duck."></canvas>
+<p class="controls">
+  <button id="start">Start</button>
+  <label>Player <select id="player"><option value="jet">Jet</option><option value="you" selected>You</option></select></label>
+  <label>Speed <select id="pace"><option value="1">1×</option><option value="0.5" selected>½×</option><option value="0.25">¼×</option></select></label>
+  <span id="keys" class="muted">Space or ↑ to jump, ↓ to duck. Tap the game to jump.</span>
+</p>
+
+<p id="manual-controls" class="controls"><button id="jump" type="button">Jump</button><button id="duck" type="button">Hold to duck</button></p>
+<div class="cols">
+<section>
+  <h3>Runs</h3>
+  <table class="probs">
+    <tr><td>Score</td><td class="num" id="score">0</td></tr>
+    <tr><td>Best</td><td class="num" id="best">0</td></tr>
+    <tr><td>Runs</td><td class="num" id="runs">0</td></tr>
+    <tr><td>Decisions</td><td class="num" id="decisions">0</td></tr>
+    <tr><td>Latency</td><td class="num" id="latency">–</td></tr>
+  </table>
+  <p id="error" class="err"></p>
+</section>
+<section id="jet-details" hidden>
+  <h3>Jet's last decision</h3>
+  <div id="decision"><p class="muted">Not playing yet.</p></div>
+  <details id="raw" hidden>
+    <summary>Raw JSON</summary>
+    <h3>Request</h3><pre id="req"></pre>
+    <h3>Response</h3><pre id="res"></pre>
+  </details>
+</section>
+</div>
+<p class="muted"><a href="runner.html">Open the full dinosaur demo</a> · Jet play supports <a href="docs.html#browser">browser GPU</a> or a <a href="docs.html#run">Jet server</a>.</p>
+</section>
+
+<h2>Question types</h2>
+<table>
+<tr><th>type</th><th>criteria</th><th>answer</th></tr>
+<tr><td><code>choice</code></td><td><code>{key: description}</code>, 2–255</td><td>a key, probabilities per key, confidence</td></tr>
+<tr><td><code>score</code></td><td><code>[level, …]</code>, 2–10, low→high</td><td>fractional score, argmax level, probabilities</td></tr>
+<tr><td><code>noul</code></td><td>none</td><td>probability that the answer is yes</td></tr>
+</table>
+
+<h2>Example</h2>
+<pre><code>POST /v1/decide
+{
+  "state": "I was charged twice this month and nobody answers my emails.",
+  "questions": {
+    "topic":    {"type": "choice", "instructions": "What is the primary issue?",
+                 "criteria": {"billing": "billing or payment problem",
+                              "bug": "the product is broken"}},
+    "escalate": {"type": "noul", "instructions": "Escalate to a human immediately?"}
+  }
+}</code></pre>
+<pre><code>{
+  "answers": {
+    "topic":    {"type": "choice", "choice": "billing",
+                 "probabilities": {"billing": 0.97, "bug": 0.03}, "confidence": 0.8},
+    "escalate": {"type": "noul", "probability": 0.81, "confidence": 0.3}
+  }
+}</code></pre>
+
+<h2>How it works</h2>
+<p>Each decision is one forward pass with no sampling. Every option maps to a single label token
+(<code>A</code>…<code>Z</code> for choices, <code>0</code>–<code>9</code> for score levels,
+<code>yes</code>/<code>no</code>), and the answer is the model's next-token distribution over only
+those tokens. Temperature scaling on held-out data calibrates the probabilities. On the server, when several
+questions share a state, the state is encoded once and reused for each of them.</p>
+<p>The base model is Qwen3-0.6B, with LoRA adapters trained on public classification datasets
+reframed as choice, score and yes/no questions.</p>
+
+<h2>Results</h2>
+<p>On the test set of 3,683 rows. The <code>emotion</code> task is held out of training entirely.</p>
+<table>
+<tr><th>model</th><th>accuracy</th><th>NLL</th><th>ECE</th><th>held-out emotion</th></tr>
+<tr><td>Qwen3-0.6B, untrained</td><td>46.7%</td><td>2.63</td><td>0.428</td><td>46.7%</td></tr>
+<tr><td><b>Jet</b></td><td><b>67.7%</b></td><td><b>0.87</b></td><td><b>0.061</b></td><td><b>60.3%</b></td></tr>
+</table>
+<p class="muted">Ten questions about one ~640-token state take about 370 ms together on an M2 Pro.</p>
+<script type="module" src="runner.js"></script>
+</body>
+</html>

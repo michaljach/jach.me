@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jet Chess</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="wide">
+<nav aria-label="Main"><a href="./">jet</a><a href="demos.html" aria-current="page">Demos</a><a href="docs.html">Docs</a><a href="https://github.com/michaljach/jet">GitHub</a></nav>
+
+<p><a href="demos.html">← All demos</a></p>
+<h1>Chess</h1>
+<p>Play against Jet. On its turn, every legal move becomes an option in one <code>choice</code> question,
+and Jet plays the move it gives the highest probability. It also rates the position with a
+<code>score</code> question. Jet was never trained on chess, so expect creative play.
+Choose browser GPU inference or connect a <a href="docs.html#run">Jet server</a>.</p>
+<p class="controls">
+  <label>Server <input id="server" size="22" spellcheck="false"></label>
+  <label>API key <input id="key" type="password" size="10" placeholder="optional"></label>
+  <span id="conn" class="muted"></span>
+</p>
+
+<div class="cols">
+<section>
+  <div id="board" class="board"></div>
+  <p id="status"></p>
+  <p class="controls">
+    <button id="new">New game</button>
+    <label>as <select id="side"><option value="w">white</option><option value="b">black</option></select></label>
+    <button id="undo">Undo</button>
+    <button id="hint">Hint</button>
+  </p>
+  <p id="pgn" class="muted"></p>
+</section>
+
+<section>
+  <h2 id="view-title">Jet's view</h2>
+  <p id="view-status" class="muted">Make a move, or ask for a hint.</p>
+  <div id="view"></div>
+  <details id="raw" hidden>
+    <summary>Raw JSON</summary>
+    <h3>Request</h3><pre id="req"></pre>
+    <h3>Response</h3><pre id="res"></pre>
+  </details>
+</section>
+</div>
+
+<script type="module">
+import {Chess} from "./vendor/chess.js";
+import {decide, setupConnection} from "./api.js";
+
+const $ = (id) => document.getElementById(id);
+const GLYPHS = {w: {k: "♔", q: "♕", r: "♖", b: "♗", n: "♘", p: "♙"}, b: {k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟"}};
+const NAMES = {k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn"};
+const COLOR = {w: "white", b: "black"};
+const EVAL_LEVELS = ["black is winning", "black is better", "equal", "white is better", "white is winning"];
+const SHOWN_MOVES = 12;
+
+let game = new Chess(), you = "w", selected = null, busy = false;
+
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  e.append(...kids);
+  return e;
+}
+const pct = (p) => (p * 100).toFixed(1) + "%";
+
+// ---- board ----
+
+// "1. e4 e5 2. Nf3" (chess.js's pgn() also carries header tags).
+function moveText() {
+  const h = game.history();
+  return h.map((san, i) => (i % 2 ? san : `${i / 2 + 1}. ${san}`)).join(" ");
+}
+
+function lastMove() {
+  const h = game.history({verbose: true});
+  return h[h.length - 1];
+}
+
+function renderBoard() {
+  const box = $("board");
+  box.innerHTML = "";
+  const ranks = you === "w" ? [8, 7, 6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6, 7, 8];
+  const files = you === "w" ? "abcdefgh" : "hgfedcba";
+  const targets = selected ? game.moves({square: selected, verbose: true}).map((m) => m.to) : [];
+  const last = lastMove();
+  for (const r of ranks) {
+    box.append(el("span", {class: "coord"}, r));
+    for (const f of files) {
+      const sq = f + r;
+      const piece = game.get(sq);
+      const dark = ("abcdefgh".indexOf(f) + r) % 2 === 1 ? " dark" : "";  // a1 is dark
+      let cls = "sq" + dark;
+      if (sq === selected) cls += " sel";
+      if (targets.includes(sq)) cls += piece ? " target capture" : " target";
+      if (last && (sq === last.from || sq === last.to)) cls += " last";
+      if (piece && piece.type === "k" && piece.color === game.turn() && game.inCheck()) cls += " check";
+      const d = el("div", {class: cls, "data-sq": sq}, piece ? GLYPHS[piece.color][piece.type] + "\uFE0E" : "");
+      d.addEventListener("click", () => clickSquare(sq));
+      box.append(d);
+    }
+  }
+  box.append(el("span"), ...[...files].map((f) => el("span", {class: "coord"}, f)));
+  $("pgn").textContent = moveText() || "No moves yet.";
+  $("status").textContent = statusText();
+}
+
+function statusText() {
+  if (game.isCheckmate()) return `Checkmate. ${game.turn() === you ? "Jet wins." : "You win."}`;
+  if (game.isStalemate()) return "Stalemate.";
+  if (game.isThreefoldRepetition()) return "Draw by threefold repetition.";
+  if (game.isInsufficientMaterial()) return "Draw: insufficient material.";
+  if (game.isDraw()) return "Draw by the fifty-move rule.";
+  if (busy) return "Jet is thinking…";
+  return `Your move (${COLOR[you]})${game.inCheck() ? ", you're in check" : ""}.`;
+}
+
+function clickSquare(sq) {
+  if (busy || game.isGameOver() || game.turn() !== you) return;
+  const piece = game.get(sq);
+  if (selected && game.moves({square: selected, verbose: true}).some((m) => m.to === sq)) {
+    game.move({from: selected, to: sq, promotion: "q"});
+    selected = null;
+    renderBoard();
+    if (!game.isGameOver()) jetMove();
+    return;
+  }
+  selected = piece && piece.color === you && sq !== selected ? sq : null;
+  renderBoard();
+}
+
+// ---- asking Jet ----
+
+function describe(m) {
+  if (m.flags.includes("k")) return "castle kingside";
+  if (m.flags.includes("q")) return "castle queenside";
+  let d = `${NAMES[m.piece]} from ${m.from} to ${m.to}`;
+  if (m.captured) d += `, takes the ${NAMES[m.captured]}`;
+  if (m.promotion) d += `, promotes to ${NAMES[m.promotion]}`;
+  return d;
+}
+
+function asciiBoard() {
+  return game.board().map((row, i) => `${8 - i} ` + row.map((p) => (p ? (p.color === "w" ? p.type.toUpperCase() : p.type) : ".")).join(" "))
+    .concat(["  a b c d e f g h"]);
+}
+
+function payload(moves) {
+  const side = COLOR[game.turn()];
+  return {
+    state: {moves: moveText() || "(game start)", to_move: side, fen: game.fen(), board: asciiBoard()},
+    questions: {
+      move: {type: "choice", instructions: `What is the best move for ${side}?`,
+        criteria: Object.fromEntries(moves.map((m) => [m.san, describe(m)]))},
+      eval: {type: "score", instructions: "How good is the position for white?", criteria: EVAL_LEVELS},
+    },
+  };
+}
+
+async function ask() {
+  const moves = game.moves({verbose: true});
+  const body = payload(moves);
+  $("view-title").textContent = `Jet's view, ${COLOR[game.turn()]} to move`;
+  $("view-status").textContent = "asking…";
+  const data = await decide(body);
+  $("req").textContent = JSON.stringify(body, null, 2);
+  $("res").textContent = JSON.stringify(data, null, 2);
+  $("raw").hidden = false;
+  $("view-status").textContent = `${data.latency_ms} ms · ${moves.length} legal moves · ${data.usage.input_tokens} input tokens`;
+  renderView(moves, data.answers);
+  return moves.find((m) => m.san === data.answers.move.choice);
+}
+
+function renderView(moves, answers) {
+  const box = $("view");
+  box.innerHTML = "";
+  const ev = answers.eval;
+  box.append(
+    el("h3", {}, "Position", el("span", {class: "muted"}, ` · confidence ${ev.confidence.toFixed(2)}`)),
+    el("p", {}, `${ev.level} · score ${ev.score.toFixed(2)} on 0–4`),
+    el("div", {class: "track"}, el("span", {style: `left:${(ev.score / 4) * 100}%`})),
+    el("p", {class: "muted track-ends"}, el("span", {}, "black"), el("span", {}, "white")),
+  );
+
+  const probs = answers.move.probabilities;
+  const ranked = [...moves].sort((a, b) => probs[b.san] - probs[a.san]);
+  box.append(el("h3", {}, "Moves", el("span", {class: "muted"}, ` · confidence ${answers.move.confidence.toFixed(2)}`)));
+  const table = el("table", {class: "probs"});
+  ranked.slice(0, SHOWN_MOVES).forEach((m, i) => {
+    const tr = el("tr", {class: i === 0 ? "best" : "", "data-from": m.from, "data-to": m.to},
+      el("td", {}, m.san),
+      el("td", {class: "muted"}, describe(m)),
+      el("td", {}, el("span", {class: "bar", style: `width:${Math.round(probs[m.san] * 120)}px`})),
+      el("td", {class: "num"}, pct(probs[m.san])),
+    );
+    table.append(tr);
+  });
+  box.append(table);
+  if (ranked.length > SHOWN_MOVES) box.append(el("p", {class: "muted"}, `and ${ranked.length - SHOWN_MOVES} more, all in the raw JSON.`));
+}
+
+async function jetMove() {
+  busy = true;
+  renderBoard();
+  try {
+    const m = await ask();
+    await new Promise((r) => setTimeout(r, 300));
+    game.move(m.san);
+  } catch (e) {
+    $("view-status").textContent = "";
+    $("view").innerHTML = "";
+    $("view").append(el("p", {class: "err"}, e.message));
+  } finally {
+    busy = false;
+    renderBoard();
+  }
+}
+
+// ---- controls ----
+
+$("new").addEventListener("click", () => {
+  if (busy) return;
+  game = new Chess();
+  you = $("side").value;
+  selected = null;
+  $("view").innerHTML = "";
+  $("view-status").textContent = "Make a move, or ask for a hint.";
+  $("raw").hidden = true;
+  renderBoard();
+  if (you === "b") jetMove();
+});
+
+$("undo").addEventListener("click", () => {
+  if (busy) return;
+  game.undo();
+  if (game.turn() !== you) game.undo();
+  selected = null;
+  renderBoard();
+  if (game.turn() !== you) jetMove();  // playing black with nothing left to undo
+});
+
+$("hint").addEventListener("click", async () => {
+  if (busy || game.isGameOver() || game.turn() !== you) return;
+  busy = true;
+  try { await ask(); }
+  catch (e) { $("view-status").textContent = ""; $("view").innerHTML = ""; $("view").append(el("p", {class: "err"}, e.message)); }
+  finally { busy = false; renderBoard(); }
+});
+
+$("view").addEventListener("mouseover", (e) => {
+  const tr = e.target.closest("tr[data-from]");
+  document.querySelectorAll(".sq.hover").forEach((x) => x.classList.remove("hover"));
+  if (tr) [tr.dataset.from, tr.dataset.to].forEach((sq) => document.querySelector(`.sq[data-sq="${sq}"]`)?.classList.add("hover"));
+});
+$("view").addEventListener("mouseleave", () => document.querySelectorAll(".sq.hover").forEach((x) => x.classList.remove("hover")));
+
+setupConnection();
+
+renderBoard();
+</script>
+</body>
+</html>
