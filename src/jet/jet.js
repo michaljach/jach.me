@@ -163,7 +163,7 @@ export async function isCached(url) {
 
 export class Jet {
   // base: a URL ending in "/" holding tokenizer.json, tokenizer_config.json, calibration.json and the ONNX file.
-  static async load(base, {file = "onnx/model_q8.onnx", onProgress, threads, maxStateTokens = MAX_STATE_TOKENS} = {}) {
+  static async load(base, {file = "onnx/model_q8_compact.onnx", onProgress, threads, maxStateTokens = MAX_STATE_TOKENS} = {}) {
     if (!navigator.gpu) throw new Error("WebGPU is unavailable. Use a browser with WebGPU enabled, or select Server.");
     const adapter = await navigator.gpu.requestAdapter({powerPreference: "high-performance"});
     if (!adapter) throw new Error("No compatible GPU found. Select Server to use hosted inference.");

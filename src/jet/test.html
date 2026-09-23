@@ -13,9 +13,9 @@
 <h1>Browser port test</h1>
 <p class="muted">Runs the golden vectors (<code>models/jet/golden.json</code> from <code>jet-golden</code>) through the in-browser model and
 compares prompts, token ids and answers with the MLX reference. Prompts and token ids must match exactly; logits only up to
-quantization error. <code>?model=&lt;base url&gt;&amp;file=onnx/model_q8.onnx&amp;max=N</code> pick what to test. States longer than
+quantization error. <code>?model=&lt;base url&gt;&amp;file=onnx/model_q8_compact.onnx&amp;max=N</code> pick what to test. States longer than
 the browser's limit (<code>max</code>, default 2048 tokens; the server uses 4096) are cut differently from the reference by design.</p>
-<p><button id="start-tests">Load Jet and run GPU tests · 791 MB</button></p><p id="status" class="muted">Not started. Downloads the model and runs the reference cases on your GPU.</p>
+<p><button id="start-tests">Load Jet and run GPU tests · 627 MB</button></p><p id="status" class="muted">Not started. Downloads the model and runs the reference cases on your GPU.</p>
 <table class="probs" id="out"><tr><th>case</th><th class="num">tokens</th><th>prompt</th><th>ids</th><th class="num">max |Δlogit|</th><th class="num">max |Δprob|</th><th>answer</th><th class="num">ms</th></tr></table>
 <script type="module">
 import {Jet, renderState, summarize} from "./jet.js";

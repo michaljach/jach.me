@@ -1,6 +1,6 @@
 // Shared backend selector. Model downloads only start after an explicit click.
 export const DEFAULT_SERVER = "http://127.0.0.1:8000";
-export const MODEL_BASE = "https://huggingface.co/michaljach/jet/resolve/8a97cfea2df622bb03f5dc9b02567e21abd2551c/";
+export const MODEL_BASE = "https://huggingface.co/michaljach/jet/resolve/dc0dc4a1882118f5dcdc9347dddddabeea6456da/";
 const $ = id => document.getElementById(id);
 const load = k => { try { return localStorage.getItem(k) || ""; } catch { return ""; } };
 const save = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
@@ -17,7 +17,7 @@ function stopModel(message = "Model unloaded.") {
   worker?.terminate(); worker = null; ready = loading = false;
   for (const {reject} of pending.values()) reject(new Error(message));
   pending.clear();
-  $("load-model").textContent = "Load Jet · 791 MB";
+  $("load-model").textContent = "Load Jet · 627 MB";
   $("load-model").disabled = false;
   $("unload-model").hidden = true;
   status(message);
@@ -34,7 +34,7 @@ function loadModel() {
   worker.onmessage = ({data: msg}) => {
     if (msg.type === "progress") {
       status(msg.stage === "init" ? "Preparing GPU… this can take a minute." :
-        `${msg.cached ? "Reading cached model" : "Downloading model"} · ${Math.round(msg.loaded / 1e6)} / ${Math.round((msg.total || 791126599) / 1e6)} MB`);
+        `${msg.cached ? "Reading cached model" : "Downloading model"} · ${Math.round(msg.loaded / 1e6)} / ${Math.round((msg.total || 627326333) / 1e6)} MB`);
     } else if (msg.type === "ready") {
       ready = true; loading = false;
       $("load-model").textContent = "GPU ready";
@@ -49,7 +49,7 @@ function loadModel() {
       if (msg.error) request.reject(new Error(msg.error)); else request.resolve(msg.result);
     }
   };
-  worker.postMessage({type: "load", base: MODEL_BASE, file: "onnx/model_q8.onnx"});
+  worker.postMessage({type: "load", base: MODEL_BASE, file: "onnx/model_q8_compact.onnx"});
 }
 export function setupConnection() {
   if ($("backend")) return;
@@ -57,7 +57,7 @@ export function setupConnection() {
   const serverLabel = $("server").closest("label"), keyLabel = $("key").closest("label");
   const controls = document.createElement("span");
   controls.className = "controls";
-  controls.innerHTML = '<label>Inference <select id="backend"><option value="webgpu">Browser GPU</option><option value="server">Server</option></select></label><button type="button" id="load-model">Load Jet · 791 MB</button><button type="button" id="unload-model" hidden>Unload</button>';
+  controls.innerHTML = '<label>Inference <select id="backend"><option value="webgpu">Browser GPU</option><option value="server">Server</option></select></label><button type="button" id="load-model">Load Jet · 627 MB</button><button type="button" id="unload-model" hidden>Unload</button>';
   serverLabel.before(controls);
   conn.setAttribute("role", "status"); conn.setAttribute("aria-live", "polite");
   const fromQuery = new URLSearchParams(location.search).get("server");

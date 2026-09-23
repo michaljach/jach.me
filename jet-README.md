@@ -5,7 +5,7 @@ a home page with a playable dinosaur game, a Demos directory, an editable reques
 a chess game against the model, and API docs.
 
 Plain static files, no build step. Choose Browser GPU in any model demo and click Load Jet
-for on-device inference using ONNX Runtime WebGPU. The pinned 791 MB quantized model is
+for on-device inference using ONNX Runtime WebGPU. The pinned 627 MB quantized model is
 cached when possible; no download starts automatically. Cancel/Unload terminates the worker
 and releases the session. Switching to Server also unloads it. Unsupported devices can use
 `jet-serve` (default `http://127.0.0.1:8000`, or `?server=http://host:port`).
@@ -14,7 +14,7 @@ and releases the session. Switching to Server also unloads it. Unsupported devic
 the GPU between 128-token chunks and are disposed after each request. `jet-worker.js` keeps
 model work off the UI thread. State text is limited to 2048 tokens; full prompts to 4096.
 Runtime dependencies are pinned to ONNX Runtime Web 1.30.0 and Hugging Face Tokenizers 0.2.0.
-Weights/tokenizer/calibration use Hugging Face revision `8a97cfea2df622bb03f5dc9b02567e21abd2551c`.
+Weights/tokenizer/calibration use Hugging Face revision `dc0dc4a1882118f5dcdc9347dddddabeea6456da`.
 
 Open `test.html` and explicitly start the reference tests to validate prompts, token IDs,
 and selected labels against the model's golden vectors. GPU speed depends on hardware;
@@ -49,3 +49,9 @@ GitHub Pages deploys `src` from the `michaljach/jach.me` repository. Jet lives i
 
 `runner.js` is shared by the homepage and dinosaur demo. The homepage defaults to
 manual play. Selecting Jet reveals the inference controls; loading the browser model requires a separate click.
+
+The default `onnx/model_q8_compact.onnx` retains all 267 supported Jet label
+weights and removes unused output rows. Its non-label logits are placeholders:
+use this export only for typed decisions, not vocabulary scoring. The 530 MB
+int4 candidate is available on Hugging Face but is not the default because
+the full evaluation showed an accuracy regression.
