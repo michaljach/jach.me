@@ -9,7 +9,7 @@
       const elements=new Map();
       const names=['Jet 4B',...data.models.map(m=>m.name)];
       names.forEach(name=>{
-        const row=document.createElement('div');row.setAttribute('role','listitem');row.className='chart-row'+(name==='Jet 4B'?' jet':'');
+        const row=document.createElement('div');row.setAttribute('role','listitem');row.className='chart-row'+(name==='Jet 4B'?' jet':name==='Jev'?' jev':'');
         const label=document.createElement('div');label.className='row-label';
         const title=document.createElement('span');title.className='row-name';
         const value=document.createElement('span');value.className='row-value tabular-nums';

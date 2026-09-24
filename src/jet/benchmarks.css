@@ -23,3 +23,4 @@
 #jet-index-chart select { max-width:100%; min-height:44px; }
 #jet-index-chart .row-detail { margin-top:3px; }
 #jet-index-chart .jet .row-name { font-weight:700; }
+#jet-index-chart .jev .bar-fill, #jet-index-chart .swatch.jev { background:#000; opacity:1; }
