@@ -79,13 +79,14 @@ questions share a state, the state is encoded once and reused for each of them.<
 <p>The base model is Qwen3-0.6B, with LoRA adapters trained on public classification datasets
 reframed as choice, score and yes/no questions.</p>
 
-<h2>Earlier Jet 0.6B results</h2>
-<p>On the test set of 3,683 rows. The <code>emotion</code> task is held out of training entirely.</p>
-<table>
-<tr><th>model</th><th>accuracy</th><th>NLL</th><th>ECE</th><th>held-out emotion</th></tr>
-<tr><td>Qwen3-0.6B, untrained</td><td>46.7%</td><td>2.63</td><td>0.428</td><td>46.7%</td></tr>
-<tr><td><b>Jet</b></td><td><b>67.7%</b></td><td><b>0.87</b></td><td><b>0.061</b></td><td><b>60.3%</b></td></tr>
-</table>
-<p class="muted">Ten questions about one ~640-token state take about 370 ms together on an M2 Pro.</p>
+<h2>Data and open source</h2>
+<p>Jet is trained on public dataset training splits and deterministic examples for tasks such as
+arithmetic, Boolean rules and code behavior. Dataset sources, revisions, training recipes and
+evaluation audits are documented in the
+<a href="https://github.com/michaljach/jet/tree/main/docs/training">training records</a>.</p>
+<p>The <a href="https://github.com/michaljach/jet">source code</a> includes data builders,
+training scripts, evaluation tools and the inference server. Download the
+<a href="https://huggingface.co/michaljach/jet">model weights</a> to run Jet locally, or explore the
+<a href="https://github.com/michaljach/jach.me/tree/main/src/jet">website source</a>.</p>
 </body>
 </html>
