@@ -23,12 +23,13 @@ return an answer outside the type you asked for.</p>
   <p class="text-small">Qwen3.5-4B with BF16 LoRA. Jet’s sampled diagnostic results are compared with published models; its official overall index has not yet been measured.</p>
   <div class="chart-top">
     <label class="form-label" for="jet-index-metric">Score
-      <select class="form-select" id="jet-index-metric">
+      <select class="form-select" id="jet-index-metric" aria-describedby="jet-index-description">
         <option value="overall">Official overall index</option>
       </select>
     </label>
     <span class="text-small text-muted">24 September 2026 snapshot</span>
   </div>
+  <p id="jet-index-description" class="text-small" aria-live="polite"></p>
   <div id="jet-index-scope" class="text-small" aria-live="polite"></div>
   <div class="legend text-small">
     <span><span class="swatch"></span>Jet · sampled diagnostic</span>

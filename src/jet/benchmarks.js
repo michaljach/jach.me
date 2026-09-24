@@ -5,6 +5,24 @@
       const bars=root.querySelector('#jet-index-bars');
       const scope=root.querySelector('#jet-index-scope');
       const axis=root.querySelector('#jet-index-axis');
+      const description=root.querySelector('#jet-index-description');
+      const benchmarkDescriptions={
+        overall:'Overall decision-making across benchmarks.',
+        '11':'Understanding claims in contracts.',
+        '30':'Solving math word problems.',
+        '41':'Detecting stance toward a topic.',
+        '42':'Checking claims against clinical trials.',
+        '43':'Predicting Python code outputs.',
+        '44':'Reasoning about cause and effect.',
+        '50':'Predicting preferences for consensus statements.',
+        '5':'Recognizing intent and out-of-scope requests.',
+        '12':'Reasoning about entailment and contradiction.',
+        '24':'Knowledge across academic subjects.',
+        '26':'Answering basic science questions.',
+        '27':'Answering challenging science questions.',
+        '28':'Resolving ambiguous references using commonsense.',
+        '29':'Choosing plausible everyday event continuations.'
+      };
       data.benchmarks.forEach(b=>{const o=document.createElement('option');o.value=b.id;o.textContent=b.name;select.append(o)});
       const elements=new Map();
       const names=['Jet',...data.models.map(m=>m.name)];
@@ -22,6 +40,7 @@
       function render(key,initial=false){
         const b=data.benchmarks.find(x=>x.id===key);const overall=!b;
         select.value=overall?'overall':key;
+        description.textContent=benchmarkDescriptions[select.value];
         scope.textContent=overall?'Jet: unranked · full 40-benchmark index not yet measured.':'Jet: '+b.n+' sampled requests · references: full benchmarks · different case sets, no matched-case ranking.';
         axis.textContent=overall?'Decision Index score (0–100)':b.metric+' (0–100)';
         const values=[{name:'Jet',score:overall?null:b.score*100,n:overall?null:b.n}];
