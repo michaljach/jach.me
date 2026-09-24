@@ -11,7 +11,7 @@
 
 <h1>Docs</h1>
 <p>
-  <a href="#browser">Browser GPU</a> · <a href="#run">Running the server</a> ·
+  <a href="#run">Running the server</a> ·
   <a href="#auth">Authentication</a> ·
   <a href="#decide">POST /v1/decide</a> ·
   <a href="#types">Question types</a> ·
@@ -21,17 +21,6 @@
   <a href="#clients">Clients</a> ·
   <a href="#training">Training your own</a>
 </p>
-
-<h2 id="browser">Browser GPU</h2>
-<p>On any demo, choose <b>Browser GPU</b> and click <b>Load Jet · 627 MB</b>. On the homepage,
-select Jet as the player first. The model downloads only after you click, and the browser caches it
-when storage allows. After loading, requests run on your device without an inference server or API key.
-Use Cancel during loading or Unload to release the model.</p>
-<p>WebGPU requires a compatible browser and GPU with enough available memory. If loading fails,
-select <b>Server</b>. Speed depends on your device; a server GPU may be faster.
-Browser inference limits state text to 2048 tokens (keeping the beginning and end),
-with a maximum complete prompt of 4096 tokens. The quantized model’s probabilities may differ
-slightly from the server model. Each page loads its own GPU session, using the cached download.</p>
 
 <h2 id="run">Running the server</h2>
 <p>Jet runs on your machine. Clone <a href="https://github.com/michaljach/jet">the repo</a>, train or
