@@ -18,49 +18,8 @@ return an answer outside the type you asked for.</p>
 
 <p><a href="demos.html">Explore the demos</a> · <a href="docs.html">Read the docs</a></p>
 
-<section class="homepage-game" id="dinosaur-heading" aria-label="Dinosaur game">
-<p class="controls" id="connection" hidden>
-  <label>Server <input id="server" size="22" spellcheck="false"></label>
-  <label>API key <input id="key" type="password" size="10" placeholder="optional"></label>
-  <span id="conn" class="muted"></span>
-</p>
-
-<canvas id="game" class="runner" width="600" height="160" tabindex="0" aria-label="Dinosaur game. Space or up arrow to jump, down arrow to duck."></canvas>
-<p class="controls">
-  <button id="start">Start</button>
-  <label>Player <select id="player"><option value="jet">Jet</option><option value="you" selected>You</option></select></label>
-  <label>Speed <select id="pace"><option value="1">1×</option><option value="0.5" selected>½×</option><option value="0.25">¼×</option></select></label>
-  <span id="keys" class="muted">Space or ↑ to jump, ↓ to duck. Tap the game to jump.</span>
-</p>
-
-<p id="manual-controls" class="controls"><button id="jump" type="button">Jump</button><button id="duck" type="button">Hold to duck</button></p>
-<div class="cols">
-<section>
-  <h3>Runs</h3>
-  <table class="probs">
-    <tr><td>Score</td><td class="num" id="score">0</td></tr>
-    <tr><td>Best</td><td class="num" id="best">0</td></tr>
-    <tr><td>Runs</td><td class="num" id="runs">0</td></tr>
-    <tr><td>Decisions</td><td class="num" id="decisions">0</td></tr>
-    <tr><td>Latency</td><td class="num" id="latency">–</td></tr>
-  </table>
-  <p id="error" class="err"></p>
-</section>
-<section id="jet-details" hidden>
-  <h3>Jet's last decision</h3>
-  <div id="decision"><p class="muted">Not playing yet.</p></div>
-  <details id="raw" hidden>
-    <summary>Raw JSON</summary>
-    <h3>Request</h3><pre id="req"></pre>
-    <h3>Response</h3><pre id="res"></pre>
-  </details>
-</section>
-</div>
-<p class="muted"><a href="runner.html">Open the full dinosaur demo</a> · Jet play supports <a href="docs.html#browser">browser GPU</a> or a <a href="docs.html#run">Jet server</a>.</p>
-</section>
-
 <section id="jet-index-chart" aria-labelledby="jet-index-heading">
-  <h2 id="jet-index-heading">Decision Index · Jet 4B</h2>
+  <h2 id="jet-index-heading">Benchmarks</h2>
   <p class="text-small">Qwen3.5-4B with BF16 LoRA. Jet’s sampled diagnostic results are compared with published models; its official overall index has not yet been measured.</p>
   <div class="chart-top">
     <label class="form-label" for="jet-index-metric">Score
@@ -76,7 +35,7 @@ return an answer outside the type you asked for.</p>
     <span><span class="swatch jev"></span>Jev · published</span>
     <span><span class="swatch reference"></span>Other published models</span>
   </div>
-  <div id="jet-index-bars" role="list" aria-label="Decision Index comparison"></div>
+  <div id="jet-index-bars" role="list" aria-label="Benchmark comparison"></div>
   <div class="axis text-small tabular-nums" aria-hidden="true"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
   <div class="axis-label text-small" id="jet-index-axis">Decision Index score (0–100)</div>
   <div class="source text-small"><a href="https://huggingface.co/spaces/multimodalart/jev-decision-index" target="_blank" rel="noreferrer">Decision Index source</a></div>
@@ -128,6 +87,5 @@ reframed as choice, score and yes/no questions.</p>
 <tr><td><b>Jet</b></td><td><b>67.7%</b></td><td><b>0.87</b></td><td><b>0.061</b></td><td><b>60.3%</b></td></tr>
 </table>
 <p class="muted">Ten questions about one ~640-token state take about 370 ms together on an M2 Pro.</p>
-<script type="module" src="runner.js"></script>
 </body>
 </html>
