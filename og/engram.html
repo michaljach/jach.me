@@ -1,0 +1,51 @@
+<!doctype html>
+<!-- Source for src/engram/og.png. Render: see og/README.md -->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans&display=block">
+<style>
+  :root { --red: #ff2d3f; --red-line: #4a1219; --red-bg: #1a0507; --red-glow: rgba(255, 45, 63, .35);
+          --muted: #8a8a8a; --bg: #010101; --mono: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  html, body { margin: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; position: relative; background: var(--bg); color: #fff;
+         font-family: "Instrument Sans", sans-serif; }
+  .grid { position: absolute; inset: 0;
+          background-image: linear-gradient(rgba(255,45,63,.07) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,45,63,.07) 1px, transparent 1px);
+          background-size: 40px 40px;
+          mask-image: linear-gradient(115deg, transparent 15%, #000 75%); }
+  .glow { position: absolute; right: -200px; bottom: -260px; width: 760px; height: 600px;
+          background: radial-gradient(closest-side, rgba(255,45,63,.16), transparent); }
+  .label { position: absolute; left: 80px; top: 72px; font: 16px var(--mono); letter-spacing: .18em; color: var(--red); }
+  h1 { position: absolute; left: 74px; top: 92px; margin: 0; font-weight: 400; font-size: 156px; letter-spacing: -.02em; }
+  .lede { position: absolute; left: 80px; top: 288px; width: 600px; margin: 0; font-size: 28px; line-height: 1.4; color: var(--muted); }
+  .logo { position: absolute; left: 790px; top: 78px; width: 350px; }
+  .steps { position: absolute; left: 80px; top: 522px; display: flex; align-items: center; }
+  .node { width: 44px; height: 44px; box-sizing: border-box; display: grid; place-items: center; border: 1px solid var(--red);
+          color: var(--red); background: var(--red-bg); font: 13px var(--mono); box-shadow: 0 0 18px var(--red-glow); }
+  .node.next { border-style: dashed; border-color: var(--red-line); color: #6b1520; box-shadow: none; background: transparent; }
+  .node.final { background: var(--red); color: var(--bg); box-shadow: 0 0 28px var(--red-glow); }
+  .wire { width: 46px; height: 1px; background: var(--red); }
+  .wire.next { background: none; border-top: 1px dashed var(--red-line); }
+  .url { position: absolute; right: 80px; top: 530px; font-size: 22px; color: var(--muted); }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="label">SOULKILLER · ENGRAM</div>
+  <h1>Engram</h1>
+  <p class="lede">Compress yourself into an AI model trained on a lifetime of your personal data.</p>
+  <img class="logo" src="../src/engram/logo-mark.svg" alt="">
+  <div class="steps">
+    <div class="node">01</div><div class="wire"></div>
+    <div class="node">02</div><div class="wire"></div>
+    <div class="node">03</div><div class="wire"></div>
+    <div class="node">04</div><div class="wire"></div>
+    <div class="node next">05</div><div class="wire next"></div>
+    <div class="node final">◆</div>
+  </div>
+  <div class="url">jach.me/engram</div>
+</body>
+</html>

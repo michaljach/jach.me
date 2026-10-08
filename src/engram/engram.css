@@ -82,6 +82,14 @@ h1 {
   font-size: 56px;
   letter-spacing: -0.02em;
   margin: 48px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* the SVG has ~2 cells of padding baked in; pull it flush with the text column */
+h1 .mark {
+  margin-left: -7px;
 }
 
 .intro {
