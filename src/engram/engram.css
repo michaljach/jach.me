@@ -536,11 +536,6 @@ h2 {
     padding: 32px 16px 0;
   }
 
-  /* top gap matches the 16px side gutter */
-  .engram header {
-    padding-top: 16px;
-  }
-
   .engram .layout {
     padding-top: 8px;
   }
