@@ -6,7 +6,7 @@ const input = $("input");
 const button = form.querySelector("button");
 const history = [];
 
-// Same shape as soulkiller's training system prompt, so channel/person/date steer the writing style.
+// Same shape as soulkiller's training system prompt, so channel/person/date steer the personality.
 function systemPrompt() {
   const others = $("with").value.trim();
   const date = new Date().toISOString().slice(0, 10);
