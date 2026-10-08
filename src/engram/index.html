@@ -82,7 +82,7 @@
                 <span class="node">02</span>
                 <div>
                   <h3>Ingest</h3>
-                  <p>Parse every source into one format. Redact passwords, codes and card numbers. Drop newsletters and spam.</p>
+                  <p>Parsers for 14 sources normalize every export into messages and documents, strip quoted replies, redact passwords, codes and card numbers, and drop newsletters and spam.</p>
                   <span class="chip">messages.jsonl</span>
                   <span class="chip">docs.jsonl</span>
                 </div>
@@ -91,7 +91,7 @@
                 <span class="node">03</span>
                 <div>
                   <h3>Build</h3>
-                  <p>Split chats into conversations. Your replies become the training targets; everyone else's messages are only context.</p>
+                  <p>Splits threads into conversation sessions and turns each into a chat example: your replies are the training targets, everyone else's messages are context. Holds out 3% of threads for validation.</p>
                   <span class="chip">sft_train.jsonl</span>
                 </div>
               </li>
