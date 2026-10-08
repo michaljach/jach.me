@@ -162,27 +162,42 @@ h2 {
   padding-left: 1.1em;
 }
 
+.model h2 {
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  margin-bottom: 24px;
+}
+
 .specs {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 8px 16px;
-  margin: 16px 0 0;
-  padding-top: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
   border-top: 1px solid var(--red-line);
-  font-size: 13px;
-  line-height: 1.5;
+  border-left: 1px solid var(--red-line);
 }
 
-.specs dt {
+.spec {
+  padding: 14px 16px;
+  border-right: 1px solid var(--red-line);
+  border-bottom: 1px solid var(--red-line);
+  background: linear-gradient(180deg, var(--red-bg), transparent);
+}
+
+.spec dt {
+  margin-bottom: 6px;
   color: var(--red);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
-  padding-top: 1px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-.specs dd {
+.spec dd {
   margin: 0;
-  color: var(--muted-color);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .pipeline h2 {
@@ -302,6 +317,10 @@ h2 {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .intro {
     flex-direction: column;
     align-items: start;
@@ -321,5 +340,9 @@ h2 {
 
   h1 {
     font-size: 40px;
+  }
+
+  .specs {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
