@@ -39,13 +39,6 @@ body {
   align-items: start;
 }
 
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
 .actions {
   flex-shrink: 0;
   display: flex;
@@ -68,20 +61,11 @@ body {
   color: var(--red);
 }
 
-.back {
-  color: var(--muted-color);
-  font-size: 14px;
-}
-
-.back:hover {
-  color: var(--text-color);
-}
-
 h1 {
   font-weight: 400;
   font-size: 56px;
   letter-spacing: -0.02em;
-  margin: 48px 0 16px;
+  margin: 0 0 16px;
 }
 
 .intro {
@@ -504,6 +488,20 @@ h2 {
   color: var(--red-dim);
   border: 1px dashed var(--red-dim);
   padding: 1px 6px;
+}
+
+.face {
+  display: flex;
+  justify-content: center;
+  padding: 96px 32px 0;
+}
+
+/* logo-mark.svg is pixel-snapped at 320px; only shrink on narrow screens.
+   The image is centred with its debris trail; nudge right so the face itself is centred. */
+.face img {
+  max-width: 100%;
+  height: auto;
+  transform: translateX(11%);
 }
 
 .engram footer {
