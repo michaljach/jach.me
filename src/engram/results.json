@@ -1,0 +1,5 @@
+{
+  "val_loss": [],
+  "perplexity": { "base": null, "engram": null },
+  "blind_test": { "correct": null, "total": null }
+}

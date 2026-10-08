@@ -143,6 +143,36 @@
               </div>
             </dl>
           </section>
+
+          <section class="benchmarks" aria-labelledby="bench-title">
+            <h2 id="bench-title">Benchmarks</h2>
+            <div class="charts">
+              <figure class="chart wide" id="chart-loss">
+                <figcaption>
+                  <h3>Validation loss</h3>
+                  <p>Loss on my held-out replies during training. Lower is better.</p>
+                </figcaption>
+                <div class="chart-plot"></div>
+                <details class="chart-data"><summary>Data</summary><div class="chart-table" hidden></div></details>
+              </figure>
+              <figure class="chart" id="chart-ppl">
+                <figcaption>
+                  <h3>Perplexity</h3>
+                  <p>How surprised each model is by messages I actually wrote. Lower is better.</p>
+                </figcaption>
+                <div class="chart-plot"></div>
+                <details class="chart-data"><summary>Data</summary><div class="chart-table" hidden></div></details>
+              </figure>
+              <figure class="chart" id="chart-blind">
+                <figcaption>
+                  <h3>Blind test</h3>
+                  <p>How often friends spot the real me. 50% means they can't tell us apart.</p>
+                </figcaption>
+                <div class="chart-plot"></div>
+                <details class="chart-data"><summary>Data</summary><div class="chart-table" hidden></div></details>
+              </figure>
+            </div>
+          </section>
         </div>
 
         <section class="about">
@@ -192,5 +222,6 @@
         </div>
       </footer>
     </main>
+    <script src="./benchmarks.js"></script>
   </body>
 </html>
