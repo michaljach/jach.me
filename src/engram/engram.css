@@ -65,7 +65,8 @@ h1 {
   font-weight: 400;
   font-size: 56px;
   letter-spacing: -0.02em;
-  margin: 0 0 16px;
+  line-height: 1;
+  margin: 0 0 24px;
 }
 
 .intro {
@@ -493,15 +494,13 @@ h2 {
 .face {
   display: flex;
   justify-content: center;
-  padding: 96px 32px 0;
+  padding: 96px 16px 0;
 }
 
-/* logo-mark.svg is pixel-snapped at 320px; only shrink on narrow screens.
-   The image is centred with its debris trail; nudge right so the face itself is centred. */
+/* face.svg is pixel-snapped at 342px and symmetric around the face; only shrink if it must */
 .face img {
   max-width: 100%;
   height: auto;
-  transform: translateX(11%);
 }
 
 .engram footer {
