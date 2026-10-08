@@ -25,65 +25,67 @@
         </p>
       </header>
 
-      <section class="about">
-        <div>
-          <h2>Personality</h2>
-          <p>
-            A QLoRA fine-tune of Qwen3 8B on messages I wrote myself: email replies, chats and posts.
-            Training loss is applied only to my side of each conversation. Other people's messages appear
-            only as the context I was replying to.
-          </p>
-        </div>
-        <div>
-          <h2>Memory</h2>
-          <p>
-            Next, a retrieval index over everything: mail, documents, calendar, notes and location
-            history. The model then has real facts to draw on.
-          </p>
-        </div>
-        <div>
-          <h2>Data</h2>
-          <ul>
-            <li>Gmail, Calendar, Drive, YouTube, Chrome</li>
-            <li>Messenger, Instagram, WhatsApp, Telegram</li>
-            <li>X, LinkedIn, Reddit</li>
-            <li>Notes and git commit messages</li>
-          </ul>
-        </div>
-        <div>
-          <h2>Privacy</h2>
-          <p>
-            Everything stays local. Parsing runs on a Mac and training runs on one RTX 4080 Super.
-            Passwords, codes and card numbers are redacted at parse time. The weights are never
-            published, so the chat below talks to a model running on your own machine.
-          </p>
-        </div>
-      </section>
+      <div class="layout">
+        <section class="chat" aria-label="Chat with Engram">
+          <details class="settings">
+            <summary>Settings</summary>
+            <div class="fields">
+              <label>Endpoint <input id="endpoint" value="http://localhost:11434" spellcheck="false" /></label>
+              <label>Model <input id="model" value="engram" spellcheck="false" /></label>
+              <label>Channel <input id="channel" value="Messenger" /></label>
+              <label>Talking with <input id="with" placeholder="Your name" /></label>
+            </div>
+            <p class="hint">
+              Serve the GGUF with Ollama and allow this origin:
+              <code>OLLAMA_ORIGINS=https://jach.me ollama serve</code>
+            </p>
+          </details>
 
-      <section class="chat" aria-label="Chat with Engram">
-        <details class="settings">
-          <summary>Settings</summary>
-          <div class="fields">
-            <label>Endpoint <input id="endpoint" value="http://localhost:11434" spellcheck="false" /></label>
-            <label>Model <input id="model" value="engram" spellcheck="false" /></label>
-            <label>Channel <input id="channel" value="Messenger" /></label>
-            <label>Talking with <input id="with" placeholder="Your name" /></label>
+          <ol id="log" class="log" aria-live="polite">
+            <li class="msg system">Say something.</li>
+          </ol>
+
+          <form id="form" class="prompt">
+            <textarea id="input" rows="1" placeholder="Message Engram" aria-label="Message" required></textarea>
+            <button type="submit">Send</button>
+          </form>
+        </section>
+
+        <section class="about">
+          <div>
+            <h2>Personality</h2>
+            <p>
+              A QLoRA fine-tune of Qwen3 8B on messages I wrote myself: email replies, chats and posts.
+              Training loss is applied only to my side of each conversation. Other people's messages appear
+              only as the context I was replying to.
+            </p>
           </div>
-          <p class="hint">
-            Serve the GGUF with Ollama and allow this origin:
-            <code>OLLAMA_ORIGINS=https://jach.me ollama serve</code>
-          </p>
-        </details>
-
-        <ol id="log" class="log" aria-live="polite">
-          <li class="msg system">Say something.</li>
-        </ol>
-
-        <form id="form" class="prompt">
-          <textarea id="input" rows="1" placeholder="Message Engram" aria-label="Message" required></textarea>
-          <button type="submit">Send</button>
-        </form>
-      </section>
+          <div>
+            <h2>Memory</h2>
+            <p>
+              Next, a retrieval index over everything: mail, documents, calendar, notes and location
+              history. The model then has real facts to draw on.
+            </p>
+          </div>
+          <div>
+            <h2>Data</h2>
+            <ul>
+              <li>Gmail, Calendar, Drive, YouTube, Chrome</li>
+              <li>Messenger, Instagram, WhatsApp, Telegram</li>
+              <li>X, LinkedIn, Reddit</li>
+              <li>Notes and git commit messages</li>
+            </ul>
+          </div>
+          <div>
+            <h2>Privacy</h2>
+            <p>
+              Everything stays local. Parsing runs on a Mac and training runs on one RTX 4080 Super.
+              Passwords, codes and card numbers are redacted at parse time. The weights are never
+              published, so the chat talks to a model running on your own machine.
+            </p>
+          </div>
+        </section>
+      </div>
 
       <footer>
         <section class="footer-section">
