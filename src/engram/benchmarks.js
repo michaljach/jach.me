@@ -125,7 +125,7 @@ function hbarChart(card, rows, format, note) {
 function barChart(card, bars, format, note) {
   const host = card.querySelector(".chart-plot");
   if (bars.some((b) => b.value == null)) return pending(host, note);
-  const W = 300, H = 220, T = 28, B = 28, gap = 24;
+  const W = Math.round(host.clientWidth) || 300, H = 220, T = 28, B = 28, gap = 24;
   const max = niceMax(Math.max(...bars.map((b) => b.value), bars.ref ?? 0));
   const bw = Math.min(72, (W - gap * (bars.length + 1)) / bars.length);
   const x0 = (W - (bars.length * bw + (bars.length - 1) * gap)) / 2;
