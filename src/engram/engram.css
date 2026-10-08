@@ -109,6 +109,22 @@ h1 {
   color: var(--red);
 }
 
+.blink {
+  animation: blink 1.1s steps(1, end) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blink {
+    animation: none;
+  }
+}
+
 .quote {
   margin: 0;
   padding-left: 20px;
