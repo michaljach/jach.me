@@ -15,48 +15,47 @@
       <header>
         <a class="back" href="/">Michal Jach</a>
         <h1>Engram</h1>
-        <figure class="quote">
-          <blockquote cite="https://cyberpunk.fandom.com/wiki/Engram">
-            A digital neural engram (also known as digital construct, Soulkilled Pseudo Intellect (SPI)
-            or ghost) is the digitalized consciousness of a human being which has been transformed into
-            coding form. They are created by using the program called Soulkiller, and many believe are
-            the way to achieve immortality.
-          </blockquote>
-          <figcaption>
-            <a target="_blank" href="https://cyberpunk.fandom.com/wiki/Engram">Cyberpunk Wiki</a>
-          </figcaption>
-        </figure>
-        <p class="lede">
-          My own engram, built from a lifetime of my data: emails, messages, posts, notes and the
-          YouTube videos I have watched.
-        </p>
       </header>
 
       <div class="layout">
-        <section class="chat" aria-label="Chat with Engram">
-          <details class="settings">
-            <summary>Settings</summary>
-            <div class="fields">
-              <label>Endpoint <input id="endpoint" value="http://localhost:11434" spellcheck="false" /></label>
-              <label>Model <input id="model" value="engram" spellcheck="false" /></label>
-              <label>Channel <input id="channel" value="Messenger" /></label>
-              <label>Talking with <input id="with" placeholder="Your name" /></label>
-            </div>
-            <p class="hint">
-              Serve the GGUF with Ollama and allow this origin:
-              <code>OLLAMA_ORIGINS=https://jach.me ollama serve</code>
-            </p>
-          </details>
+        <div class="main">
+          <figure class="quote">
+            <blockquote cite="https://cyberpunk.fandom.com/wiki/Engram">
+              A digital neural engram (also known as digital construct, Soulkilled Pseudo Intellect (SPI)
+              or ghost) is the digitalized consciousness of a human being which has been transformed into
+              coding form. They are created by using the program called Soulkiller, and many believe are
+              the way to achieve immortality.
+            </blockquote>
+            <figcaption>
+              <a target="_blank" href="https://cyberpunk.fandom.com/wiki/Engram">Cyberpunk Wiki</a>
+            </figcaption>
+          </figure>
 
-          <ol id="log" class="log" aria-live="polite">
-            <li class="msg system">Say something.</li>
-          </ol>
+          <section class="chat" aria-label="Chat with Engram">
+            <details class="settings">
+              <summary>Settings</summary>
+              <div class="fields">
+                <label>Endpoint <input id="endpoint" value="http://localhost:11434" spellcheck="false" /></label>
+                <label>Model <input id="model" value="engram" spellcheck="false" /></label>
+                <label>Channel <input id="channel" value="Messenger" /></label>
+                <label>Talking with <input id="with" placeholder="Your name" /></label>
+              </div>
+              <p class="hint">
+                Serve the GGUF with Ollama and allow this origin:
+                <code>OLLAMA_ORIGINS=https://jach.me ollama serve</code>
+              </p>
+            </details>
 
-          <form id="form" class="prompt">
-            <textarea id="input" rows="1" placeholder="Message Engram" aria-label="Message" required></textarea>
-            <button type="submit">Send</button>
-          </form>
-        </section>
+            <form id="form" class="prompt">
+              <textarea id="input" rows="1" placeholder="Message Engram" aria-label="Message" required></textarea>
+              <button type="submit">Send</button>
+            </form>
+
+            <ol id="log" class="log" aria-live="polite">
+              <li class="msg system">Say something.</li>
+            </ol>
+          </section>
+        </div>
 
         <section class="about">
           <div>
