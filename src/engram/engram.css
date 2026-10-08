@@ -54,12 +54,59 @@ h1 {
   margin: 48px 0 16px;
 }
 
+.intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
 .lede {
   font-size: 20px;
   line-height: 1.5;
   max-width: 720px;
-  margin: 0 0 24px;
+  margin: 0;
   color: var(--muted-color);
+}
+
+.download {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px 14px 18px;
+  font: inherit;
+  text-align: left;
+  color: var(--red);
+  background: var(--red-bg);
+  border: 1px solid var(--red);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+  box-shadow: 0 0 24px var(--red-glow);
+  cursor: pointer;
+}
+
+.download:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.download-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 15px;
+}
+
+.download-meta {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--red-dim);
+}
+
+.download-meta span {
+  color: var(--red);
 }
 
 .quote {
@@ -253,6 +300,12 @@ h2 {
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .intro {
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
   }
 }
 

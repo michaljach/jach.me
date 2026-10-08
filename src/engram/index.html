@@ -15,11 +15,22 @@
       <header>
         <a class="back" href="/">Michal Jach</a>
         <h1>Engram</h1>
-        <p class="lede">
-          A digital copy of a person: an LLM trained on lifetime personal data from Gmail, Calendar,
-          Drive, YouTube, Chrome, Messenger, Instagram, WhatsApp, Telegram, X, LinkedIn, Reddit,
-          notes and git history.
-        </p>
+        <div class="intro">
+          <p class="lede">
+            A digital copy of a person: an LLM trained on lifetime personal data from Gmail, Calendar,
+            Drive, YouTube, Chrome, Messenger, Instagram, WhatsApp, Telegram, X, LinkedIn, Reddit,
+            notes and git history.
+          </p>
+          <button class="download" type="button" disabled aria-describedby="download-soon">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="square">
+              <path d="M12 3v12M7 10l5 5 5-5M4 15v5h16v-5" />
+            </svg>
+            <span class="download-text">
+              <span>Download model</span>
+              <span class="download-meta">GGUF · ~5 GB · <span id="download-soon">Coming soon</span></span>
+            </span>
+          </button>
+        </div>
       </header>
 
       <div class="layout">
