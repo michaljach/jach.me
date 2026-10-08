@@ -39,8 +39,37 @@ h1 {
   margin: 48px 0 16px;
 }
 
+.quote {
+  margin: 0 0 24px;
+  padding-left: 20px;
+  border-left: 2px solid #262626;
+  max-width: 640px;
+}
+
+.quote blockquote {
+  margin: 0;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.quote figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted-color);
+}
+
+.quote figcaption::before {
+  content: "— ";
+}
+
+.quote figcaption a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .lede {
-  font-size: 20px;
+  font-size: 15px;
   line-height: 1.5;
   max-width: 640px;
   margin: 0;
