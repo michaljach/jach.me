@@ -87,9 +87,11 @@ h1 {
   gap: 12px;
 }
 
-/* the SVG has ~2 cells of padding baked in; pull it flush with the text column */
+/* logo-header.svg is pixel-snapped at 84px with 8px of padding for its glow; keep it unscaled */
 h1 .mark {
-  margin-left: -7px;
+  flex-shrink: 0;
+  margin-left: -8px;
+  margin-right: -4px;
 }
 
 .intro {
