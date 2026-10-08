@@ -164,64 +164,81 @@ fetch("./results.json")
         h.insertAdjacentHTML("beforeend", ' <span class="tag">Sample data</span>');
       }
     }
-    lineChart(document.getElementById("chart-loss"), data.val_loss, {
-      x: "step", y: "loss", fromZero: true,
-      xFmt: (v, end) => (end ? `step ${v}` : `${v}`),
-      yFmt: (v, axis) => v.toFixed(axis ? 1 : 3),
-      tip: (p) => `Step ${p.step}<br><strong>${p.loss.toFixed(3)}</strong> loss`,
-      head: ["Step", "Loss"],
-      label: "Validation loss during training",
-      note: "Validation loss appears once the first eval step runs.",
-    });
-
-    const k = (v) => `${(v / 1024).toFixed(v % 1024 ? 1 : 0)}k`;
-    lineChart(document.getElementById("chart-speed"), data.speed, {
-      x: "context", y: "tps",
-      xFmt: (v, end) => (end ? `${k(v)} tokens` : k(v)),
-      yFmt: (v) => `${Math.round(v)}`,
-      tip: (p) => `${p.context.toLocaleString()} tokens of context<br><strong>${Math.round(p.tps)}</strong> tokens/s`,
-      head: ["Context", "Tokens/s"],
-      label: "Generation speed in tokens per second across context length",
-      note: "Benchmarked with llama.cpp once the GGUF is exported.",
-    });
-
-    lineChart(document.getElementById("chart-vram"), data.vram, {
-      x: "context", y: "gb",
-      xFmt: (v, end) => (end ? `${k(v)} tokens` : k(v)),
-      yFmt: (v, axis) => `${axis && Number.isInteger(v) ? v : v.toFixed(1)} GB`,
-      tip: (p) => `${p.context.toLocaleString()} tokens of context<br><strong>${p.gb.toFixed(1)} GB</strong> VRAM`,
-      head: ["Context", "VRAM"],
-      label: "GPU memory used across context length",
-      note: "Benchmarked with llama.cpp once the GGUF is exported.",
-    });
-
-    hbarChart(
-      document.getElementById("chart-mix"),
-      Object.entries(data.data_mix ?? {}).map(([label, value]) => ({ label, value })),
-      (v) => (v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${Math.round(v / 1e3)}k`),
-      "Counted after ingest and build.",
-    );
-
-    const ppl = data.perplexity ?? {};
-    barChart(
-      document.getElementById("chart-ppl"),
-      [
-        { label: "Qwen3 8B", value: ppl.base ?? null, kind: "base" },
-        { label: "Engram", value: ppl.engram ?? null, kind: "engram" },
-      ],
-      (v) => v.toFixed(1),
-      "Measured on held-out messages after training.",
-    );
-
-    const bt = data.blind_test ?? {};
-    const rate = bt.total ? (bt.correct / bt.total) * 100 : null;
-    const bars = [{ label: "Guessed right", value: rate, kind: "engram" }];
-    bars.ref = 50;
-    bars.refLabel = "chance 50%";
-    barChart(
-      document.getElementById("chart-blind"),
-      bars,
-      (v) => `${Math.round(v)}%`,
-      "Friends guess real me vs Engram on held-out chats.",
-    );
+    render(data);
+    // Charts draw at their box's pixel width, so redraw when that width changes.
+    const charts = document.querySelector(".charts");
+    let width = charts.clientWidth;
+    let frame;
+    new ResizeObserver(() => {
+      if (charts.clientWidth === width) return;
+      width = charts.clientWidth;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        hideTip();
+        render(data);
+      });
+    }).observe(charts);
   });
+
+function render(data) {
+  lineChart(document.getElementById("chart-loss"), data.val_loss, {
+    x: "step", y: "loss", fromZero: true,
+    xFmt: (v, end) => (end ? `step ${v}` : `${v}`),
+    yFmt: (v, axis) => v.toFixed(axis ? 1 : 3),
+    tip: (p) => `Step ${p.step}<br><strong>${p.loss.toFixed(3)}</strong> loss`,
+    head: ["Step", "Loss"],
+    label: "Validation loss during training",
+    note: "Validation loss appears once the first eval step runs.",
+  });
+
+  const k = (v) => `${(v / 1024).toFixed(v % 1024 ? 1 : 0)}k`;
+  lineChart(document.getElementById("chart-speed"), data.speed, {
+    x: "context", y: "tps",
+    xFmt: (v, end) => (end ? `${k(v)} tokens` : k(v)),
+    yFmt: (v) => `${Math.round(v)}`,
+    tip: (p) => `${p.context.toLocaleString()} tokens of context<br><strong>${Math.round(p.tps)}</strong> tokens/s`,
+    head: ["Context", "Tokens/s"],
+    label: "Generation speed in tokens per second across context length",
+    note: "Benchmarked with llama.cpp once the GGUF is exported.",
+  });
+
+  lineChart(document.getElementById("chart-vram"), data.vram, {
+    x: "context", y: "gb",
+    xFmt: (v, end) => (end ? `${k(v)} tokens` : k(v)),
+    yFmt: (v, axis) => `${axis && Number.isInteger(v) ? v : v.toFixed(1)} GB`,
+    tip: (p) => `${p.context.toLocaleString()} tokens of context<br><strong>${p.gb.toFixed(1)} GB</strong> VRAM`,
+    head: ["Context", "VRAM"],
+    label: "GPU memory used across context length",
+    note: "Benchmarked with llama.cpp once the GGUF is exported.",
+  });
+
+  hbarChart(
+    document.getElementById("chart-mix"),
+    Object.entries(data.data_mix ?? {}).map(([label, value]) => ({ label, value })),
+    (v) => (v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${Math.round(v / 1e3)}k`),
+    "Counted after ingest and build.",
+  );
+
+  const ppl = data.perplexity ?? {};
+  barChart(
+    document.getElementById("chart-ppl"),
+    [
+      { label: "Qwen3 8B", value: ppl.base ?? null, kind: "base" },
+      { label: "Engram", value: ppl.engram ?? null, kind: "engram" },
+    ],
+    (v) => v.toFixed(1),
+    "Measured on held-out messages after training.",
+  );
+
+  const bt = data.blind_test ?? {};
+  const rate = bt.total ? (bt.correct / bt.total) * 100 : null;
+  const bars = [{ label: "Guessed right", value: rate, kind: "engram" }];
+  bars.ref = 50;
+  bars.refLabel = "chance 50%";
+  barChart(
+    document.getElementById("chart-blind"),
+    bars,
+    (v) => `${Math.round(v)}%`,
+    "Friends guess real me vs Engram on held-out chats.",
+  );
+}
