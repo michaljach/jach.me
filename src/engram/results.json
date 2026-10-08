@@ -1,5 +1,93 @@
 {
-  "val_loss": [],
-  "perplexity": { "base": null, "engram": null },
-  "blind_test": { "correct": null, "total": null }
+  "sample": true,
+  "val_loss": [
+    {
+      "step": 200,
+      "loss": 2.572
+    },
+    {
+      "step": 400,
+      "loss": 2.277
+    },
+    {
+      "step": 600,
+      "loss": 2.054
+    },
+    {
+      "step": 800,
+      "loss": 1.882
+    },
+    {
+      "step": 1000,
+      "loss": 1.749
+    },
+    {
+      "step": 1200,
+      "loss": 1.65
+    },
+    {
+      "step": 1400,
+      "loss": 1.58
+    },
+    {
+      "step": 1600,
+      "loss": 1.536
+    },
+    {
+      "step": 1800,
+      "loss": 1.512
+    },
+    {
+      "step": 2000,
+      "loss": 1.499
+    },
+    {
+      "step": 2200,
+      "loss": 1.49
+    },
+    {
+      "step": 2400,
+      "loss": 1.478
+    },
+    {
+      "step": 2600,
+      "loss": 1.462
+    },
+    {
+      "step": 2800,
+      "loss": 1.443
+    },
+    {
+      "step": 3000,
+      "loss": 1.424
+    },
+    {
+      "step": 3200,
+      "loss": 1.412
+    },
+    {
+      "step": 3400,
+      "loss": 1.409
+    },
+    {
+      "step": 3600,
+      "loss": 1.415
+    },
+    {
+      "step": 3800,
+      "loss": 1.426
+    },
+    {
+      "step": 4000,
+      "loss": 1.437
+    }
+  ],
+  "perplexity": {
+    "base": 38.4,
+    "engram": 11.9
+  },
+  "blind_test": {
+    "correct": 31,
+    "total": 50
+  }
 }

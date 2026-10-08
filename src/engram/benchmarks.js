@@ -2,6 +2,7 @@
 //   val_loss:   [{ "step": 200, "loss": 2.31 }, ...]     validation loss during training
 //   perplexity: { "base": 41.2, "engram": 12.8 }        on held-out messages I wrote
 //   blind_test: { "correct": 23, "total": 50 }          friends guessing real me vs engram
+//   sample:     true                                   marks placeholder numbers; remove for real results
 const NS = "http://www.w3.org/2000/svg";
 const tip = document.createElement("div");
 tip.className = "chart-tip";
@@ -125,6 +126,11 @@ fetch("./results.json")
   .then((r) => (r.ok ? r.json() : {}))
   .catch(() => ({}))
   .then((data) => {
+    if (data.sample) {
+      for (const h of document.querySelectorAll(".chart h3")) {
+        h.insertAdjacentHTML("beforeend", ' <span class="tag">Sample data</span>');
+      }
+    }
     lossChart(document.getElementById("chart-loss"), data.val_loss);
 
     const ppl = data.perplexity ?? {};
