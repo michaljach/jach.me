@@ -2,6 +2,9 @@
 //   val_loss:   [{ "step": 200, "loss": 2.31 }, ...]     validation loss during training
 //   perplexity: { "base": 41.2, "engram": 12.8 }        on held-out messages I wrote
 //   blind_test: { "correct": 23, "total": 50 }          friends guessing real me vs engram
+//   speed:      [{ "context": 512, "tps": 112 }, ...]     generation tokens/s, Q4_K_M on the 4080 Super
+//   vram:       [{ "context": 512, "gb": 5.6 }, ...]      GPU memory at that context length
+//   data_mix:   { "Messenger": 4100000, ... }            my training tokens per source
 //   sample:     true                                   marks placeholder numbers; remove for real results
 const NS = "http://www.w3.org/2000/svg";
 const tip = document.createElement("div");
@@ -51,42 +54,72 @@ function niceMax(v) {
   return Math.ceil(v / p) * p;
 }
 
-function lossChart(card, points) {
+// Single-series line chart. o: { x, y, xFmt, yFmt, tip, head, label, note, fromZero }
+function lineChart(card, points, o) {
   const host = card.querySelector(".chart-plot");
-  if (!points?.length) return pending(host, "Validation loss appears once the first eval step runs.");
-  const W = 640, H = 240, L = 44, R = 16, T = 12, B = 28;
-  const maxStep = Math.max(...points.map((p) => p.step));
-  const maxLoss = niceMax(Math.max(...points.map((p) => p.loss)));
-  const x = (s) => L + (s / maxStep) * (W - L - R);
-  const y = (v) => T + (1 - v / maxLoss) * (H - T - B);
+  if (!points?.length) return pending(host, o.note);
+  const W = Math.round(host.clientWidth) || 640, H = W > 480 ? 240 : 180, L = 44, R = 16, T = 12, B = 28;
+  const xs = points.map((p) => p[o.x]);
+  const minX = o.fromZero ? 0 : Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const maxY = niceMax(Math.max(...points.map((p) => p[o.y])));
+  const x = (v) => L + ((v - minX) / (maxX - minX || 1)) * (W - L - R);
+  const y = (v) => T + (1 - v / maxY) * (H - T - B);
   const s = svg(host, W, H);
-  s.setAttribute("aria-label", `Validation loss over ${points.length} eval steps`);
+  s.setAttribute("aria-label", o.label);
   for (let i = 0; i <= 2; i++) {
-    const v = (maxLoss / 2) * i;
+    const v = (maxY / 2) * i;
     el("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), class: "grid" }, s);
-    el("text", { x: L - 8, y: y(v) + 4, class: "tick", "text-anchor": "end" }, s).textContent = v.toFixed(1);
+    el("text", { x: L - 8, y: y(v) + 4, class: "tick", "text-anchor": "end" }, s).textContent = o.yFmt(v, true);
   }
-  el("text", { x: W - R, y: H - 6, class: "tick", "text-anchor": "end" }, s).textContent = `step ${maxStep}`;
-  el("text", { x: L, y: H - 6, class: "tick" }, s).textContent = "0";
-  el("path", { d: points.map((p, i) => `${i ? "L" : "M"}${x(p.step)},${y(p.loss)}`).join(""), class: "line" }, s);
+  el("text", { x: L, y: H - 6, class: "tick" }, s).textContent = o.xFmt(minX);
+  el("text", { x: W - R, y: H - 6, class: "tick", "text-anchor": "end" }, s).textContent = o.xFmt(maxX, true);
+  el("path", { d: points.map((p, i) => `${i ? "L" : "M"}${x(p[o.x])},${y(p[o.y])}`).join(""), class: "line" }, s);
   const last = points[points.length - 1];
-  el("circle", { cx: x(last.step), cy: y(last.loss), r: 4, class: "dot" }, s);
+  el("circle", { cx: x(last[o.x]), cy: y(last[o.y]), r: 4, class: "dot" }, s);
   const cross = el("line", { y1: T, y2: H - B, class: "cross", visibility: "hidden" }, s);
   const hit = el("rect", { x: L, y: T, width: W - L - R, height: H - T - B, fill: "transparent" }, s);
   hit.addEventListener("pointermove", (e) => {
     const box = s.getBoundingClientRect();
-    const step = ((e.clientX - box.left) / box.width * W - L) / (W - L - R) * maxStep;
-    const p = points.reduce((a, b) => (Math.abs(b.step - step) < Math.abs(a.step - step) ? b : a));
-    cross.setAttribute("x1", x(p.step));
-    cross.setAttribute("x2", x(p.step));
+    const at = minX + (((e.clientX - box.left) / box.width) * W - L) / (W - L - R) * (maxX - minX);
+    const p = points.reduce((a, b) => (Math.abs(b[o.x] - at) < Math.abs(a[o.x] - at) ? b : a));
+    cross.setAttribute("x1", x(p[o.x]));
+    cross.setAttribute("x2", x(p[o.x]));
     cross.setAttribute("visibility", "visible");
-    showTip(e, `Step ${p.step}<br><strong>${p.loss.toFixed(3)}</strong> loss`);
+    showTip(e, o.tip(p));
   });
   hit.addEventListener("pointerleave", () => {
     cross.setAttribute("visibility", "hidden");
     hideTip();
   });
-  table(card, ["Step", "Loss"], points.map((p) => [p.step, p.loss.toFixed(3)]));
+  table(card, o.head, points.map((p) => [o.xFmt(p[o.x]), o.yFmt(p[o.y])]));
+}
+
+// Horizontal bars, sorted largest first, labels and values written beside each bar.
+function hbarChart(card, rows, format, note) {
+  const host = card.querySelector(".chart-plot");
+  if (!rows?.length) return pending(host, note);
+  rows = [...rows].sort((a, b) => b.value - a.value);
+  const W = Math.round(host.clientWidth) || 640, L = 96, R = 64, bh = 18, gap = 10;
+  const H = rows.length * (bh + gap) - gap;
+  const max = Math.max(...rows.map((r) => r.value));
+  const s = svg(host, W, H);
+  s.setAttribute("aria-label", rows.map((r) => `${r.label} ${format(r.value)}`).join(", "));
+  rows.forEach((r, i) => {
+    const top = i * (bh + gap);
+    const w = Math.max(2, (r.value / max) * (W - L - R));
+    const rr = Math.min(4, w);
+    el("text", { x: L - 10, y: top + bh / 2 + 4, class: "tick", "text-anchor": "end" }, s).textContent = r.label;
+    el("path", {
+      d: `M${L},${top}H${L + w - rr}Q${L + w},${top} ${L + w},${top + rr}V${top + bh - rr}Q${L + w},${top + bh} ${L + w - rr},${top + bh}H${L}Z`,
+      class: "bar engram",
+    }, s);
+    el("text", { x: L + w + 8, y: top + bh / 2 + 4, class: "value" }, s).textContent = format(r.value);
+    const hit = el("rect", { x: 0, y: top - gap / 2, width: W, height: bh + gap, fill: "transparent" }, s);
+    hit.addEventListener("pointermove", (e) => showTip(e, `${r.label}<br><strong>${format(r.value)}</strong>`));
+    hit.addEventListener("pointerleave", hideTip);
+  });
+  table(card, ["Source", "Tokens"], rows.map((r) => [r.label, format(r.value)]));
 }
 
 function barChart(card, bars, format, note) {
@@ -131,7 +164,43 @@ fetch("./results.json")
         h.insertAdjacentHTML("beforeend", ' <span class="tag">Sample data</span>');
       }
     }
-    lossChart(document.getElementById("chart-loss"), data.val_loss);
+    lineChart(document.getElementById("chart-loss"), data.val_loss, {
+      x: "step", y: "loss", fromZero: true,
+      xFmt: (v, end) => (end ? `step ${v}` : `${v}`),
+      yFmt: (v, axis) => v.toFixed(axis ? 1 : 3),
+      tip: (p) => `Step ${p.step}<br><strong>${p.loss.toFixed(3)}</strong> loss`,
+      head: ["Step", "Loss"],
+      label: "Validation loss during training",
+      note: "Validation loss appears once the first eval step runs.",
+    });
+
+    const k = (v) => `${(v / 1024).toFixed(v % 1024 ? 1 : 0)}k`;
+    lineChart(document.getElementById("chart-speed"), data.speed, {
+      x: "context", y: "tps",
+      xFmt: (v, end) => (end ? `${k(v)} tokens` : k(v)),
+      yFmt: (v) => `${Math.round(v)}`,
+      tip: (p) => `${p.context.toLocaleString()} tokens of context<br><strong>${Math.round(p.tps)}</strong> tokens/s`,
+      head: ["Context", "Tokens/s"],
+      label: "Generation speed in tokens per second across context length",
+      note: "Benchmarked with llama.cpp once the GGUF is exported.",
+    });
+
+    lineChart(document.getElementById("chart-vram"), data.vram, {
+      x: "context", y: "gb",
+      xFmt: (v, end) => (end ? `${k(v)} tokens` : k(v)),
+      yFmt: (v, axis) => `${axis && Number.isInteger(v) ? v : v.toFixed(1)} GB`,
+      tip: (p) => `${p.context.toLocaleString()} tokens of context<br><strong>${p.gb.toFixed(1)} GB</strong> VRAM`,
+      head: ["Context", "VRAM"],
+      label: "GPU memory used across context length",
+      note: "Benchmarked with llama.cpp once the GGUF is exported.",
+    });
+
+    hbarChart(
+      document.getElementById("chart-mix"),
+      Object.entries(data.data_mix ?? {}).map(([label, value]) => ({ label, value })),
+      (v) => (v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${Math.round(v / 1e3)}k`),
+      "Counted after ingest and build.",
+    );
 
     const ppl = data.perplexity ?? {};
     barChart(

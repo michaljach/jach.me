@@ -89,5 +89,83 @@
   "blind_test": {
     "correct": 31,
     "total": 50
+  },
+  "speed": [
+    {
+      "context": 512,
+      "tps": 114.0
+    },
+    {
+      "context": 1024,
+      "tps": 107.5
+    },
+    {
+      "context": 1536,
+      "tps": 100.6
+    },
+    {
+      "context": 2048,
+      "tps": 93.2
+    },
+    {
+      "context": 2560,
+      "tps": 85.2
+    },
+    {
+      "context": 3072,
+      "tps": 76.8
+    },
+    {
+      "context": 3584,
+      "tps": 67.8
+    },
+    {
+      "context": 4096,
+      "tps": 58.3
+    }
+  ],
+  "vram": [
+    {
+      "context": 512,
+      "gb": 5.54
+    },
+    {
+      "context": 1024,
+      "gb": 5.69
+    },
+    {
+      "context": 1536,
+      "gb": 5.83
+    },
+    {
+      "context": 2048,
+      "gb": 5.98
+    },
+    {
+      "context": 2560,
+      "gb": 6.12
+    },
+    {
+      "context": 3072,
+      "gb": 6.26
+    },
+    {
+      "context": 3584,
+      "gb": 6.41
+    },
+    {
+      "context": 4096,
+      "gb": 6.55
+    }
+  ],
+  "data_mix": {
+    "Messenger": 4100000,
+    "WhatsApp": 2300000,
+    "Gmail": 1800000,
+    "Telegram": 900000,
+    "Notes": 600000,
+    "X": 420000,
+    "Reddit": 310000,
+    "Git": 180000
   }
 }

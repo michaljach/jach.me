@@ -218,30 +218,30 @@ h2 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
-  border-top: 1px solid var(--red-line);
-  border-left: 1px solid var(--red-line);
+  border-top: 1px solid #1c1c1c;
+  border-left: 1px solid #1c1c1c;
 }
 
 .spec {
-  padding: 14px 16px;
-  border-right: 1px solid var(--red-line);
-  border-bottom: 1px solid var(--red-line);
-  background: linear-gradient(180deg, var(--red-bg), transparent);
+  padding: 8px 12px;
+  border-right: 1px solid #1c1c1c;
+  border-bottom: 1px solid #1c1c1c;
 }
 
 .spec dt {
-  margin-bottom: 6px;
+  margin-bottom: 2px;
   color: var(--red);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
 .spec dd {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted-color);
 }
 
 .pipeline h2 {
