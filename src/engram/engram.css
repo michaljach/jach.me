@@ -107,6 +107,29 @@ h2 {
   padding-left: 1.1em;
 }
 
+.specs {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px 16px;
+  margin: 16px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--red-line);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.specs dt {
+  color: var(--red);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  padding-top: 1px;
+}
+
+.specs dd {
+  margin: 0;
+  color: var(--muted-color);
+}
+
 .pipeline h2 {
   color: var(--red);
   text-transform: uppercase;

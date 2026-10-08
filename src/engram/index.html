@@ -95,6 +95,17 @@
               Training loss is applied only to my side of each conversation. Other people's messages appear
               only as the context I was replying to.
             </p>
+            <dl class="specs">
+              <dt>Base model</dt><dd>Qwen3 8B</dd>
+              <dt>Method</dt><dd>QLoRA, 4-bit base</dd>
+              <dt>LoRA</dt><dd>rank 32, alpha 32, all attention and MLP projections</dd>
+              <dt>Context</dt><dd>4,096 tokens</dd>
+              <dt>Training</dt><dd>2 epochs, lr 1e-4 cosine, AdamW 8-bit, bf16</dd>
+              <dt>Batch</dt><dd>2 × 8 gradient accumulation</dd>
+              <dt>Stack</dt><dd>Unsloth, TRL, Hugging Face Datasets</dd>
+              <dt>Hardware</dt><dd>RTX 4080 Super, 16 GB</dd>
+              <dt>Export</dt><dd>LoRA adapter, GGUF Q4_K_M</dd>
+            </dl>
           </div>
           <div>
             <h2>Memory</h2>
