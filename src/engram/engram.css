@@ -82,16 +82,6 @@ h1 {
   font-size: 56px;
   letter-spacing: -0.02em;
   margin: 48px 0 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* logo-header.svg is pixel-snapped at 84px with 8px of padding for its glow; keep it unscaled */
-h1 .mark {
-  flex-shrink: 0;
-  margin-left: -8px;
-  margin-right: -4px;
 }
 
 .intro {
