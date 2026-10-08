@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Engram · Michal Jach</title>
+    <title>Engram</title>
     <meta charset="utf-8" />
-    <meta name="description" content="Engram: a personal language model trained on a lifetime of my own writing." />
+    <meta name="description" content="Engram: compress yourself into an AI model trained on a lifetime of your personal data." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#010101" />
     <link rel="icon" type="image/x-icon" href="../favicon.ico" />
@@ -84,7 +84,7 @@
                 <span class="node">03</span>
                 <div>
                   <h3>Build</h3>
-                  <p>Split chats into conversations. My replies become the training targets; everyone else's messages are only context.</p>
+                  <p>Split chats into conversations. Your replies become the training targets; everyone else's messages are only context.</p>
                   <span class="chip">sft_train.jsonl</span>
                 </div>
               </li>
@@ -109,7 +109,7 @@
                 <span class="node">&#9670;</span>
                 <div>
                   <h3>Engram</h3>
-                  <p>A model with my personality and, soon, my memory, running entirely on my own hardware.</p>
+                  <p>A model with your personality and, soon, your memory, running entirely on your own hardware.</p>
                 </div>
               </li>
             </ol>
@@ -163,7 +163,7 @@
               <figure class="chart wide" id="chart-loss">
                 <figcaption>
                   <h3>Validation loss</h3>
-                  <p>Loss on my held-out replies during training. Lower is better.</p>
+                  <p>Loss on held-out replies during training. Lower is better.</p>
                 </figcaption>
                 <div class="chart-plot"></div>
                 <details class="chart-data"><summary>Data</summary><div class="chart-table" hidden></div></details>
@@ -171,7 +171,7 @@
               <figure class="chart" id="chart-ppl">
                 <figcaption>
                   <h3>Perplexity</h3>
-                  <p>How surprised each model is by messages I actually wrote. Lower is better.</p>
+                  <p>How surprised each model is by real held-out messages. Lower is better.</p>
                 </figcaption>
                 <div class="chart-plot"></div>
                 <details class="chart-data"><summary>Data</summary><div class="chart-table" hidden></div></details>
@@ -179,7 +179,7 @@
               <figure class="chart" id="chart-blind">
                 <figcaption>
                   <h3>Blind test</h3>
-                  <p>How often friends spot the real me. 50% means they can't tell us apart.</p>
+                  <p>How often friends spot the real person. 50% means they can't tell the two apart.</p>
                 </figcaption>
                 <div class="chart-plot"></div>
                 <details class="chart-data"><summary>Data</summary><div class="chart-table" hidden></div></details>
@@ -203,7 +203,7 @@
               <figure class="chart wide" id="chart-mix">
                 <figcaption>
                   <h3>Training data</h3>
-                  <p>Tokens I wrote, by source.</p>
+                  <p>Tokens written by the person, by source.</p>
                 </figcaption>
                 <div class="chart-plot"></div>
                 <details class="chart-data"><summary>Data</summary><div class="chart-table" hidden></div></details>
@@ -216,9 +216,9 @@
           <div>
             <h2>Personality</h2>
             <p>
-              A QLoRA fine-tune of Qwen3 8B on messages I wrote myself: email replies, chats and posts.
-              Training loss is applied only to my side of each conversation. Other people's messages appear
-              only as the context I was replying to.
+              A QLoRA fine-tune of Qwen3 8B on messages you wrote yourself: email replies, chats and posts.
+              Training loss is applied only to your side of each conversation. Other people's messages appear
+              only as the context you were replying to.
             </p>
           </div>
           <div>
@@ -240,9 +240,8 @@
           <div>
             <h2>Privacy</h2>
             <p>
-              Everything stays local. Parsing runs on a Mac and training runs on one RTX 4080 Super.
-              Passwords, codes and card numbers are redacted at parse time. The weights are never
-              published.
+              Everything stays local: parsing and training run on your own hardware, and a single 16 GB
+              GPU is enough. Passwords, codes and card numbers are redacted at parse time.
             </p>
           </div>
         </section>

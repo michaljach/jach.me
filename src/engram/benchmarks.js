@@ -1,10 +1,10 @@
 // Renders the benchmark charts from results.json. Empty or null results show a pending frame.
 //   val_loss:   [{ "step": 200, "loss": 2.31 }, ...]     validation loss during training
-//   perplexity: { "base": 41.2, "engram": 12.8 }        on held-out messages I wrote
-//   blind_test: { "correct": 23, "total": 50 }          friends guessing real me vs engram
+//   perplexity: { "base": 41.2, "engram": 12.8 }        on held-out messages the person wrote
+//   blind_test: { "correct": 23, "total": 50 }          friends guessing real person vs engram
 //   speed:      [{ "context": 512, "tps": 112 }, ...]     generation tokens/s, Q4_K_M on the 4080 Super
 //   vram:       [{ "context": 512, "gb": 5.6 }, ...]      GPU memory at that context length
-//   data_mix:   { "Messenger": 4100000, ... }            my training tokens per source
+//   data_mix:   { "Messenger": 4100000, ... }            training tokens per source
 //   sample:     true                                   marks placeholder numbers; remove for real results
 const NS = "http://www.w3.org/2000/svg";
 const tip = document.createElement("div");
@@ -239,6 +239,6 @@ function render(data) {
     document.getElementById("chart-blind"),
     bars,
     (v) => `${Math.round(v)}%`,
-    "Friends guess real me vs Engram on held-out chats.",
+    "Friends guess the real person vs Engram on held-out chats.",
   );
 }
