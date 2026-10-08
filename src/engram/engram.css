@@ -3,6 +3,11 @@ body {
 }
 
 .engram {
+  --red: #ff2d3f;
+  --red-dim: #8a1a24;
+  --red-line: #4a1219;
+  --red-bg: #1a0507;
+  --red-glow: rgba(255, 45, 63, 0.35);
   width: 100%;
   max-width: 1200px;
   box-sizing: border-box;
@@ -52,7 +57,7 @@ h1 {
 .quote {
   margin: 0;
   padding-left: 20px;
-  border-left: 2px solid #262626;
+  border-left: 2px solid var(--red);
   max-width: 640px;
 }
 
@@ -102,126 +107,112 @@ h2 {
   padding-left: 1.1em;
 }
 
-.chat {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.pipeline h2 {
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  margin-bottom: 24px;
 }
 
-.settings {
-  font-size: 14px;
-  color: var(--muted-color);
-}
-
-.settings summary {
-  cursor: pointer;
-  width: fit-content;
-}
-
-.fields {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.fields label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-input,
-textarea,
-button {
-  font: inherit;
-  color: var(--text-color);
-  background: #111;
-  border: 1px solid #262626;
-  border-radius: 8px;
-  padding: 10px 12px;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--muted-color);
-}
-
-.hint {
-  margin: 12px 0 0;
-}
-
-code {
-  font-size: 13px;
-  color: var(--text-color);
-  word-break: break-all;
-}
-
-.log {
+.steps {
   list-style: none;
   margin: 0;
-  padding: 24px 0;
-  border-top: 1px solid #1a1a1a;
-  border-bottom: 1px solid #1a1a1a;
-  min-height: 240px;
-  max-height: 60dvh;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  padding: 0;
 }
 
-.msg {
-  max-width: 75%;
-  padding: 10px 14px;
-  border-radius: 14px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 20px;
+  padding-bottom: 32px;
 }
 
-.msg.user {
-  align-self: end;
-  background: var(--text-color);
+/* the wire connecting each node to the next */
+.step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 21px;
+  top: 44px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(var(--red), var(--red-dim));
+}
+
+.step.next::before {
+  background: none;
+  border-left: 2px dashed var(--red-dim);
+  width: 0;
+}
+
+.node {
+  width: 44px;
+  height: 44px;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--red);
+  color: var(--red);
+  background: var(--red-bg);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);
+  box-shadow: 0 0 18px var(--red-glow);
+}
+
+.step.next .node {
+  border-style: dashed;
+  color: var(--red-dim);
+  border-color: var(--red-dim);
+  box-shadow: none;
+}
+
+.step.final .node {
+  background: var(--red);
   color: var(--background-color);
+  box-shadow: 0 0 28px var(--red-glow);
 }
 
-.msg.assistant {
-  align-self: start;
-  background: #161616;
+.step h3 {
+  font-weight: 400;
+  font-size: 18px;
+  margin: 10px 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.msg.system {
-  align-self: center;
+.step.final h3 {
+  color: var(--red);
+  text-shadow: 0 0 16px var(--red-glow);
+}
+
+.step p {
+  margin: 0 0 10px;
   color: var(--muted-color);
   font-size: 14px;
-  max-width: 100%;
-  text-align: center;
+  line-height: 1.6;
 }
 
-.prompt {
-  display: flex;
-  gap: 8px;
+.chip {
+  display: inline-block;
+  margin: 0 6px 6px 0;
+  padding: 3px 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  color: var(--red);
+  border: 1px solid var(--red-line);
+  background: var(--red-bg);
 }
 
-.prompt textarea {
-  flex: 1;
-  resize: none;
-  max-height: 200px;
-}
-
-.prompt button {
-  cursor: pointer;
-  background: var(--text-color);
-  color: var(--background-color);
-  border-color: var(--text-color);
-  padding: 10px 20px;
-}
-
-.prompt button:disabled {
-  opacity: 0.5;
-  cursor: default;
+.tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--red-dim);
+  border: 1px dashed var(--red-dim);
+  padding: 1px 6px;
 }
 
 .engram footer {
@@ -246,9 +237,5 @@ code {
 
   h1 {
     font-size: 40px;
-  }
-
-  .msg {
-    max-width: 90%;
   }
 }

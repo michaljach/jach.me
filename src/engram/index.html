@@ -31,28 +31,58 @@
             </figcaption>
           </figure>
 
-          <section class="chat" aria-label="Chat with Engram">
-            <details class="settings">
-              <summary>Settings</summary>
-              <div class="fields">
-                <label>Endpoint <input id="endpoint" value="http://localhost:11434" spellcheck="false" /></label>
-                <label>Model <input id="model" value="engram" spellcheck="false" /></label>
-                <label>Channel <input id="channel" value="Messenger" /></label>
-                <label>Talking with <input id="with" placeholder="Your name" /></label>
-              </div>
-              <p class="hint">
-                Serve the GGUF with Ollama and allow this origin:
-                <code>OLLAMA_ORIGINS=https://jach.me ollama serve</code>
-              </p>
-            </details>
-
-            <form id="form" class="prompt">
-              <textarea id="input" rows="1" placeholder="Message Engram" aria-label="Message" required></textarea>
-              <button type="submit">Send</button>
-            </form>
-
-            <ol id="log" class="log" aria-live="polite">
-              <li class="msg system">Say something.</li>
+          <section class="pipeline" aria-labelledby="pipeline-title">
+            <h2 id="pipeline-title">How it works</h2>
+            <ol class="steps">
+              <li class="step">
+                <span class="node">01</span>
+                <div>
+                  <h3>Export</h3>
+                  <p>Download a lifetime of data from Google, Meta, WhatsApp, Telegram, X, LinkedIn and Reddit, plus notes and git history.</p>
+                  <span class="chip">data/raw/</span>
+                </div>
+              </li>
+              <li class="step">
+                <span class="node">02</span>
+                <div>
+                  <h3>Ingest</h3>
+                  <p>Parse every source into one format. Redact passwords, codes and card numbers. Drop newsletters and spam.</p>
+                  <span class="chip">messages.jsonl</span>
+                  <span class="chip">docs.jsonl</span>
+                </div>
+              </li>
+              <li class="step">
+                <span class="node">03</span>
+                <div>
+                  <h3>Build</h3>
+                  <p>Split chats into conversations. My replies become the training targets; everyone else's messages are only context.</p>
+                  <span class="chip">sft_train.jsonl</span>
+                </div>
+              </li>
+              <li class="step">
+                <span class="node">04</span>
+                <div>
+                  <h3>Train</h3>
+                  <p>QLoRA fine-tune of Qwen3 8B on a single RTX 4080 Super, then export for local inference.</p>
+                  <span class="chip">LoRA adapter</span>
+                  <span class="chip">GGUF</span>
+                </div>
+              </li>
+              <li class="step next">
+                <span class="node">05</span>
+                <div>
+                  <h3>Remember <span class="tag">Next</span></h3>
+                  <p>Index mail, documents, calendar, notes and location history so the model can recall real facts.</p>
+                  <span class="chip">retrieval index</span>
+                </div>
+              </li>
+              <li class="step final">
+                <span class="node">&#9670;</span>
+                <div>
+                  <h3>Engram</h3>
+                  <p>A model with my personality and, soon, my memory, running entirely on my own hardware.</p>
+                </div>
+              </li>
             </ol>
           </section>
         </div>
@@ -87,7 +117,7 @@
             <p>
               Everything stays local. Parsing runs on a Mac and training runs on one RTX 4080 Super.
               Passwords, codes and card numbers are redacted at parse time. The weights are never
-              published, so the chat talks to a model running on your own machine.
+              published.
             </p>
           </div>
         </section>
@@ -104,6 +134,5 @@
         </div>
       </footer>
     </main>
-    <script src="./chat.js"></script>
   </body>
 </html>
