@@ -224,7 +224,7 @@ function render(data) {
     document.getElementById("chart-ppl"),
     [
       { label: "Qwen3 8B", value: ppl.base ?? null, kind: "base" },
-      { label: "Engram", value: ppl.engram ?? null, kind: "engram" },
+      { label: "Soulkiller", value: ppl.engram ?? null, kind: "engram" },
     ],
     (v) => v.toFixed(1),
     "Measured on held-out messages after training.",
@@ -239,6 +239,6 @@ function render(data) {
     document.getElementById("chart-blind"),
     bars,
     (v) => `${Math.round(v)}%`,
-    "Friends guess the real person vs Engram on held-out chats.",
+    "Friends guess the real person vs Soulkiller on held-out chats.",
   );
 }

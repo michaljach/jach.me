@@ -2,7 +2,7 @@ body {
   justify-content: start;
 }
 
-.engram {
+.soulkiller {
   --red: #ff2d3f;
   --red-dim: #8a1a24;
   --red-line: #4a1219;
@@ -16,13 +16,13 @@ body {
   flex-direction: column;
 }
 
-.engram header,
-.engram .layout,
-.engram .about {
+.soulkiller header,
+.soulkiller .layout,
+.soulkiller .about {
   padding: 72px 72px 0;
 }
 
-.engram .layout {
+.soulkiller .layout {
   padding-top: 8px;
 }
 
@@ -503,7 +503,7 @@ h2 {
   height: auto;
 }
 
-.engram footer {
+.soulkiller footer {
   margin-top: auto;
 }
 
@@ -530,13 +530,13 @@ h2 {
 }
 
 @media (max-width: 600px) {
-  .engram header,
-  .engram .layout,
-  .engram .about {
+  .soulkiller header,
+  .soulkiller .layout,
+  .soulkiller .about {
     padding: 32px 16px 0;
   }
 
-  .engram .layout {
+  .soulkiller .layout {
     padding-top: 8px;
   }
 
