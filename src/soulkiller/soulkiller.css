@@ -100,10 +100,6 @@ h1 {
   cursor: pointer;
 }
 
-.download:disabled {
-  cursor: not-allowed;
-}
-
 .download-text {
   display: flex;
   flex-direction: column;
