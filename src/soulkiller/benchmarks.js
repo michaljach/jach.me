@@ -1,7 +1,7 @@
 // Renders the benchmark charts from results.json. Empty or null results show a pending frame.
 //   val_loss:   [{ "step": 200, "loss": 2.31 }, ...]     validation loss during training
-//   perplexity: { "base": 41.2, "engram": 12.8 }        on held-out messages the person wrote
-//   blind_test: { "correct": 23, "total": 50 }          friends guessing real person vs engram
+//   perplexity: { "base": 41.2, "soulkiller": 12.8 }        on held-out messages the person wrote
+//   blind_test: { "correct": 23, "total": 50 }          friends guessing real person vs Soulkiller
 //   speed:      [{ "context": 512, "tps": 112 }, ...]     generation tokens/s, Q4_K_M on the 4080 Super
 //   vram:       [{ "context": 512, "gb": 5.6 }, ...]      GPU memory at that context length
 //   data_mix:   { "Messenger": 4100000, ... }            training tokens per source
@@ -112,7 +112,7 @@ function hbarChart(card, rows, format, note) {
     el("text", { x: L - 10, y: top + bh / 2 + 4, class: "tick", "text-anchor": "end" }, s).textContent = r.label;
     el("path", {
       d: `M${L},${top}H${L + w - rr}Q${L + w},${top} ${L + w},${top + rr}V${top + bh - rr}Q${L + w},${top + bh} ${L + w - rr},${top + bh}H${L}Z`,
-      class: "bar engram",
+      class: "bar soulkiller",
     }, s);
     el("text", { x: L + w + 8, y: top + bh / 2 + 4, class: "value" }, s).textContent = format(r.value);
     const hit = el("rect", { x: 0, y: top - gap / 2, width: W, height: bh + gap, fill: "transparent" }, s);
@@ -224,7 +224,7 @@ function render(data) {
     document.getElementById("chart-ppl"),
     [
       { label: "Qwen3 8B", value: ppl.base ?? null, kind: "base" },
-      { label: "Soulkiller", value: ppl.engram ?? null, kind: "engram" },
+      { label: "Soulkiller", value: ppl.soulkiller ?? null, kind: "soulkiller" },
     ],
     (v) => v.toFixed(1),
     "Measured on held-out messages after training.",
@@ -232,7 +232,7 @@ function render(data) {
 
   const bt = data.blind_test ?? {};
   const rate = bt.total ? (bt.correct / bt.total) * 100 : null;
-  const bars = [{ label: "Guessed right", value: rate, kind: "engram" }];
+  const bars = [{ label: "Guessed right", value: rate, kind: "soulkiller" }];
   bars.ref = 50;
   bars.refLabel = "chance 50%";
   barChart(
